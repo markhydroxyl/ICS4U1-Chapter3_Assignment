@@ -31,4 +31,9 @@ public class MineTile extends Tile {
 	public int[] getCoor() {
 		return coor;
 	}
+	
+	@Override
+	public void onHighlight() {
+		//Highlight the tile
+	}
 }
