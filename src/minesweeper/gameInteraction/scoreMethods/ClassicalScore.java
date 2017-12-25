@@ -19,10 +19,24 @@ public class ClassicalScore extends Score {
 
 	@Override
 	public void modifyScore(int eventType) {
-		// TODO Auto-generated method stub
 		// If blank tile is revealed, +1 for each blank tile
 		// If number tile is revealed, +1
 		// If mine tile is revealed, -1
-		// If game finished, turn time into seconds, add width*height*5-time
+		if (eventType > 0) {
+			//Blank tile
+			curScore+=eventType;
+		} else if (eventType==0) {
+			//Number tile
+			curScore++;
+		} else if (eventType==-1) {
+			//Mine
+			curScore--;
+		}
+	}
+
+	@Override
+	public void onWin(int time, int aWidth, int aHeight) {
+		//On win, add the difference between five times the number of tiles and the time elapsed in seconds
+		curScore+=aWidth*aHeight*5-time;
 	}
 }

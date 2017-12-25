@@ -26,6 +26,26 @@ public class FlagScore extends Score {
 		// If mine tile is revealed, -1
 		// If flag is planted, +2
 		// If flag is removed, -2
-		// If game finished, turn time into seconds, add width*height*6-time
+		
+		if (eventType > 0) {
+			curScore+=eventType;
+		} else if (eventType==0) {
+			curScore++;
+		} else if (eventType == -1) {
+			//Mine
+			curScore--;
+		} else if (eventType == -2) {
+			//Plant flag
+			curScore+=2;
+		} else if (eventType == -3) {
+			//Remove flag
+			curScore-=2;
+		}
+	}
+	
+	@Override
+	public void onWin(int time, int aWidth, int aHeight) {
+		//On win, add the difference between six times the number of tiles and the time elapsed in seconds
+		curScore+=aWidth*aHeight*6-time;
 	}
 }
