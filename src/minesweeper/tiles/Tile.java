@@ -1,16 +1,27 @@
 package minesweeper.tiles;
 
 public abstract class Tile {
+	protected int[] coor;
+	protected boolean revealed;
+	protected boolean flagged;
+	
 	public Tile(int[] aCoor) {
+		this.coor = aCoor;
 	}
 	
 	public abstract void onReveal();
 	
-	public abstract boolean isRevealed();
+	public boolean isRevealed() {
+		return revealed;
+	}
 	
-	public abstract boolean isFlagged();
+	public boolean isFlagged() {
+		return flagged;
+	}
 	
-	public abstract int[] getCoor();
+	public int[] getCoor() {
+		return coor;
+	}
 	
 	public abstract void onHighlight();
 }

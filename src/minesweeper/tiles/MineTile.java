@@ -1,13 +1,8 @@
 package minesweeper.tiles;
 
 public class MineTile extends Tile {
-	private int[] coor;
-	private boolean revealed;
-	private boolean flagged;
-
 	public MineTile(int[] aCoor) {
 		super(aCoor);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -19,17 +14,17 @@ public class MineTile extends Tile {
 
 	@Override
 	public boolean isRevealed() {
-		return revealed;
+		return super.isRevealed();
 	}
 
 	@Override
 	public boolean isFlagged() {
-		return flagged;
+		return super.isFlagged();
 	}
-
+	
 	@Override
 	public int[] getCoor() {
-		return coor;
+		return super.getCoor();
 	}
 	
 	@Override

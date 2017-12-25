@@ -1,13 +1,16 @@
 package minesweeper.tiles;
 
 public class NumberTile extends Tile {
-	private int[] coor;
-	private boolean revealed;
-	private boolean flagged;
-
+	private int numAdjMines;
+	
 	public NumberTile(int[] aCoor) {
 		super(aCoor);
-		// TODO Auto-generated constructor stub
+		this.numAdjMines = 0;
+	}
+	
+	public NumberTile(int[] aCoor, int aNum){
+		super(aCoor);
+		this.numAdjMines = aNum;
 	}
 
 	@Override
@@ -19,21 +22,25 @@ public class NumberTile extends Tile {
 
 	@Override
 	public boolean isRevealed() {
-		return revealed;
+		return super.isRevealed();
 	}
 
 	@Override
 	public boolean isFlagged() {
-		return flagged;
+		return super.isFlagged();
 	}
 	
 	@Override
 	public int[] getCoor() {
-		return coor;
+		return super.getCoor();
 	}
 
 	@Override
 	public void onHighlight() {
 		//Highlight the tile
+	}
+	
+	public int getNumAdjMines() {
+		return numAdjMines;
 	}
 }
