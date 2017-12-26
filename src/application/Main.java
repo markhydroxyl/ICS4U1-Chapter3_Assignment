@@ -2,6 +2,7 @@ package application;
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
+import minesweeper.MinesweeperGame;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 
@@ -22,5 +23,7 @@ public class Main extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);
+		MinesweeperGame nextGame = new MinesweeperGame();
+		nextGame.newGame(10, 10, 15);
 	}
 }

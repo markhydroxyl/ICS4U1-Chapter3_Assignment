@@ -31,7 +31,7 @@ public class GameBoard {
 	}
 	
 	public void display() {
-		this.display.display();
+		this.display.display(tileArray);
 	}
 	
 	public void generate() {
@@ -56,7 +56,7 @@ public class GameBoard {
 					for (int y=-1; y<=1; y++) {
 						nextX = boardWidth+x;
 						nextY = boardWidth+y;
-						if (tileArray[nextX][nextY].getClass() == MineTile.class) {
+						if ((x!=0&&y!=0)&&tileArray[nextX][nextY].getClass() == MineTile.class) {
 							count++;
 						}
 					}
