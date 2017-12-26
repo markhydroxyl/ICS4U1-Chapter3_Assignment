@@ -1,15 +1,10 @@
 package minesweeper.tiles;
 
-import util.Coordinates;
-
 public abstract class Tile {
-	//protected int[] coor;
-	protected Coordinates coor;
 	protected boolean revealed;
 	protected boolean flagged;
 	
-	public Tile(Coordinates aCoor) {
-		this.coor = aCoor;
+	public Tile() {
 	}
 	
 	public abstract int onReveal();
@@ -20,10 +15,6 @@ public abstract class Tile {
 	
 	public boolean isFlagged() {
 		return flagged;
-	}
-	
-	public Coordinates getCoor() {
-		return coor;
 	}
 	
 	public void setReveal() {

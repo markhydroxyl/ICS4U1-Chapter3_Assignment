@@ -18,6 +18,9 @@ public class MinesweeperGame {
 	}
 	
 	public String getState() {
+		boolean[] a = gameBoard.checkWin();
+		gameOver = a[0];
+		gameWin = a[1];
 		if (gameWin) {
 			return "win";
 		} else if (gameOver&&!gameWin) {

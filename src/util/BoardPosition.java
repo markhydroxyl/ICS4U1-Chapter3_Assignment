@@ -1,10 +1,10 @@
 package util;
 
-public class Coordinates {
+public class BoardPosition {
 	private int x;
 	private int y;
 	
-	public Coordinates(int x1, int y1) {
+	public BoardPosition(int x1, int y1) {
 		this.x = x1;
 		this.y = y1;
 	}

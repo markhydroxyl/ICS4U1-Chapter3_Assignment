@@ -6,7 +6,7 @@ import minesweeper.gameInteraction.*;
 import minesweeper.gameInteraction.scoreMethods.*;
 import minesweeper.inputHandlers.*;
 import minesweeper.tiles.*;
-import util.Coordinates;
+import util.BoardPosition;
 
 public class GameBoard {
 	private int boardWidth;
@@ -22,7 +22,7 @@ public class GameBoard {
 		//Create a gameboard of width aWidth, height aHeight, and aMineCount number of mines
 		this.boardWidth = aWidth;
 		this.boardHeight = aHeight;
-		this.mineCount = aMineCount;
+		this.mineCount = Math.min(aMineCount, aWidth*aHeight);
 		this.score = new ClassicalScore();
 	}
 	
@@ -31,7 +31,7 @@ public class GameBoard {
 		//aMineDensity cannot be greater than 1!
 		this.boardHeight = aHeight;
 		this.boardWidth = aWidth;
-		this.mineCount = (int) aMineDensity*aWidth*aHeight;
+		this.mineCount = Math.min(aWidth*aHeight, (int) aMineDensity*aWidth*aHeight);
 		this.score = new ClassicalScore();
 	}
 	
@@ -39,52 +39,64 @@ public class GameBoard {
 		this.display.display(tileArray);
 	}
 	
-	public void generate() {
-		//Generate a grid of Tiles
-		tileArray = new Tile[boardWidth][boardHeight];
+	private void addMines() {
 		boolean mineSet = false;
-		for (int i=0; i<Math.min(mineCount, boardWidth*boardHeight); i++) {
+		for (int i=0; i<mineCount; i++) {
 			while(!mineSet) {
 				int nextX = (int)(Math.random()*boardWidth);
 				int nextY = (int)(Math.random()*boardHeight);
-				if (tileArray[nextX][nextY] instanceof MineTile)
-					tileArray[nextX][nextY] = new MineTile(new Coordinates(nextX, nextY));
+				if (!(getTile(nextX, nextY) instanceof MineTile)) {
+					setTile(nextX, nextY, new MineTile());
+					mineSet = true;
+				}
 			}
 			mineSet = false;
 		}
+	}
+	
+	public void generate() {
+		//Generate a grid of Tiles
+		tileArray = new Tile[boardWidth][boardHeight];
+		addMines();
 		
 		for (int i=0; i<boardWidth; i++) {
 			for (int j=0; j<boardHeight; j++) {
-				int count = 0;
-				int nextX=0, nextY=0;
-				for (int x=-1; x<=1; x++) {
-					for (int y=-1; y<=1; y++) {
-						nextX = boardWidth+x;
-						nextY = boardWidth+y;
-						if ((x!=0&&y!=0)&&tileArray[nextX][nextY] instanceof MineTile) {
-							count++;
-						}
-					}
-				}
+				int count = countAdjMines(new BoardPosition(i, j));
 				if (count != 0) {
-					tileArray[i][j] = new NumberTile(new Coordinates(i, j), count);
+					setTile(i, j, new NumberTile(count));
 				} else {
-					tileArray[i][j] = new BlankTile(new Coordinates(i, j));
+					setTile(i, j, new BlankTile());
 				}
 			}
 		}
 	}
 	
-	public void onFlag(Coordinates coor) {
-		Tile toFlag = tileArray[coor.getX()][coor.getY()];
+	private int countAdjMines(BoardPosition coor) {
+		int count = 0;
+		int nextX=0, nextY=0;
+		for (int x=-1; x<=1; x++) {
+			for (int y=-1; y<=1; y++) {
+				nextX = coor.getX()+x;
+				nextY = coor.getY()+y;
+				if ((x!=0&&y!=0)&&getTile(nextX, nextY) instanceof MineTile) {
+					count++;
+				}
+			}
+		}
+		
+		return count;
+	}
+	
+	public void onFlag(BoardPosition coor) {
+		Tile toFlag = getTile(coor);
 		if(!toFlag.isRevealed()) {
 			toFlag.setFlag();
 			score.modifyScore(toFlag.isFlagged()?-2:-3);
 		}
 	}
 	
-	public boolean[] onReveal(Coordinates coor) {
-		Tile toReveal = tileArray[coor.getX()][coor.getY()];
+	public boolean[] onReveal(BoardPosition coor) {
+		Tile toReveal = getTile(coor);
 		if(!toReveal.isFlagged()&&!toReveal.isRevealed()) {
 			int result = toReveal.onReveal();
 			if (result == -1) {
@@ -95,45 +107,47 @@ public class GameBoard {
 				score.modifyScore(0);
 				return checkWin();
 			} else if (result == 1) {
-				int counter = 1;
-				ArrayList<Tile> toBeChecked = new ArrayList<Tile>();
-				toBeChecked.add(toReveal);
-				while(!toBeChecked.isEmpty()) {
-					Tile checkingTile = toBeChecked.remove(0);
-					for(int i=-1; i<=1; i++) {
-						for(int j=-1; j<=1; j++) {
-							if (!(i==0&&j==0)) {
-								int nextX = checkingTile.getCoor().getX()+i;
-								int nextY = checkingTile.getCoor().getY()+j;
-								if (nextX>=0&&nextX<boardWidth&&nextY>=0&&nextY<boardHeight) {
-									Tile nextTile = tileArray[nextX][nextY];
-									if (nextTile instanceof NumberTile) {
-										nextTile.setReveal();
-										counter++;
-									} else if (nextTile instanceof BlankTile) {
-										nextTile.setReveal();
-										toBeChecked.add(nextTile);
-									}
-								}
-							}
-						}
-					}
-					
-					score.modifyScore(counter);
-				}
-				
+				score.modifyScore(countAndRevealAdjBlanks(coor));
 				return checkWin();
 			}
 		}
 		return new boolean[] {false, false};
 	}
 	
-	public void revealAll() {
+	private int countAndRevealAdjBlanks(BoardPosition coor) {
+		int counter = 1;
+		ArrayList<BoardPosition> posToBeChecked = new ArrayList<BoardPosition>();
+		posToBeChecked.add(coor);
+		while(!posToBeChecked.isEmpty()) {
+			BoardPosition checkingCoor = posToBeChecked.remove(0);
+			for(int x=-1; x<=1; x++) {
+				for(int y=-1; y<=1; y++) {
+					if(!(x==0&&y==0)) {
+						int nextX = checkingCoor.getX()+x;
+						int nextY = checkingCoor.getY()+y;
+						if (nextX>=0&&nextX<boardWidth&&nextY>=0&&nextY<boardHeight) {
+							Tile nextTile=getTile(nextX, nextY);
+							if (!nextTile.isRevealed()) {
+								counter++;
+								nextTile.setReveal();
+								if (nextTile instanceof BlankTile) {
+									posToBeChecked.add(new BoardPosition(nextX, nextY));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return counter;
+	}
+	
+	private void revealAll() {
 		for (int i=0; i<boardWidth; i++) {
 			for (int j=0; j<boardHeight; j++) {
-				if (!tileArray[i][j].isRevealed()&&!tileArray[i][j].isFlagged()) {
-					tileArray[i][j].setReveal();
-				} else if (tileArray[i][j].isFlagged()&&tileArray[i][j] instanceof MineTile) {
+				if (!getTile(i, j).isRevealed()&&!getTile(i, j).isFlagged()) {
+					getTile(i, j).setReveal();
+				} else if (getTile(i, j).isFlagged()&&getTile(i, j) instanceof MineTile) {
 					//Logic for showing that it was incorrectly flagged
 				}
 			}
@@ -143,12 +157,28 @@ public class GameBoard {
 	public boolean[] checkWin() {
 		for (int i=0; i<boardWidth; i++) {
 			for (int j=0; j<boardHeight; j++) {
-				if (tileArray[i][j] instanceof MineTile && !tileArray[i][j].isRevealed()) {
+				if (getTile(i, j) instanceof MineTile && !getTile(i, j).isRevealed()) {
 					return new boolean[] {false, false};
 				}
 			}
 		}
 		
 		return new boolean[] {true, true};
+	}
+	
+	private Tile getTile(int x, int y) {
+		return getTile(new BoardPosition(x, y));
+	}
+	
+	private Tile getTile(BoardPosition coor) {
+		return tileArray[coor.getX()][coor.getY()];
+	}
+	
+	private void setTile(BoardPosition coor, Tile aTile) {
+		tileArray[coor.getX()][coor.getY()] = aTile;
+	}
+	
+	private void setTile(int x, int y, Tile aTile) {
+		setTile(new BoardPosition(x, y), aTile);
 	}
 }
