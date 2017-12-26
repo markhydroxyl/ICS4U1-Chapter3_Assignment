@@ -1,11 +1,14 @@
 package minesweeper.tiles;
 
+import util.Coordinates;
+
 public abstract class Tile {
-	protected int[] coor;
+	//protected int[] coor;
+	protected Coordinates coor;
 	protected boolean revealed;
 	protected boolean flagged;
 	
-	public Tile(int[] aCoor) {
+	public Tile(Coordinates aCoor) {
 		this.coor = aCoor;
 	}
 	
@@ -19,7 +22,7 @@ public abstract class Tile {
 		return flagged;
 	}
 	
-	public int[] getCoor() {
+	public Coordinates getCoor() {
 		return coor;
 	}
 	

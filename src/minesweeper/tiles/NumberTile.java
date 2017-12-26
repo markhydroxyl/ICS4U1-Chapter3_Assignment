@@ -1,14 +1,16 @@
 package minesweeper.tiles;
 
+import util.Coordinates;
+
 public class NumberTile extends Tile {
 	private int numAdjMines;
 	
-	public NumberTile(int[] aCoor) {
+	public NumberTile(Coordinates aCoor) {
 		super(aCoor);
 		this.numAdjMines = 0;
 	}
 	
-	public NumberTile(int[] aCoor, int aNum){
+	public NumberTile(Coordinates aCoor, int aNum){
 		super(aCoor);
 		this.numAdjMines = aNum;
 	}
@@ -32,7 +34,7 @@ public class NumberTile extends Tile {
 	}
 	
 	@Override
-	public int[] getCoor() {
+	public Coordinates getCoor() {
 		return super.getCoor();
 	}
 

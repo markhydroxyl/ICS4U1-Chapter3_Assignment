@@ -1,7 +1,9 @@
 package minesweeper.tiles;
 
+import util.Coordinates;
+
 public class MineTile extends Tile {
-	public MineTile(int[] aCoor) {
+	public MineTile(Coordinates aCoor) {
 		super(aCoor);
 	}
 
@@ -24,7 +26,7 @@ public class MineTile extends Tile {
 	}
 	
 	@Override
-	public int[] getCoor() {
+	public Coordinates getCoor() {
 		return super.getCoor();
 	}
 	

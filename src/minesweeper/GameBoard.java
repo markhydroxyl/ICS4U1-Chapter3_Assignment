@@ -6,6 +6,7 @@ import minesweeper.gameInteraction.*;
 import minesweeper.gameInteraction.scoreMethods.*;
 import minesweeper.inputHandlers.*;
 import minesweeper.tiles.*;
+import util.Coordinates;
 
 public class GameBoard {
 	private int boardWidth;
@@ -47,7 +48,7 @@ public class GameBoard {
 				int nextX = (int)(Math.random()*boardWidth);
 				int nextY = (int)(Math.random()*boardHeight);
 				if (tileArray[nextX][nextY] instanceof MineTile)
-					tileArray[nextX][nextY] = new MineTile(new int[]{nextX, nextY});
+					tileArray[nextX][nextY] = new MineTile(new Coordinates(nextX, nextY));
 			}
 			mineSet = false;
 		}
@@ -66,24 +67,24 @@ public class GameBoard {
 					}
 				}
 				if (count != 0) {
-					tileArray[i][j] = new NumberTile(new int[]{i, j}, count);
+					tileArray[i][j] = new NumberTile(new Coordinates(i, j), count);
 				} else {
-					tileArray[i][j] = new BlankTile(new int[]{i, j});
+					tileArray[i][j] = new BlankTile(new Coordinates(i, j));
 				}
 			}
 		}
 	}
 	
-	public void onFlag(int[] coor) {
-		Tile toFlag = tileArray[coor[0]][coor[1]];
+	public void onFlag(Coordinates coor) {
+		Tile toFlag = tileArray[coor.getX()][coor.getY()];
 		if(!toFlag.isRevealed()) {
 			toFlag.setFlag();
 			score.modifyScore(toFlag.isFlagged()?-2:-3);
 		}
 	}
 	
-	public boolean[] onReveal(int[] coor) {
-		Tile toReveal = tileArray[coor[0]][coor[1]];
+	public boolean[] onReveal(Coordinates coor) {
+		Tile toReveal = tileArray[coor.getX()][coor.getY()];
 		if(!toReveal.isFlagged()&&!toReveal.isRevealed()) {
 			int result = toReveal.onReveal();
 			if (result == -1) {
@@ -102,8 +103,8 @@ public class GameBoard {
 					for(int i=-1; i<=1; i++) {
 						for(int j=-1; j<=1; j++) {
 							if (!(i==0&&j==0)) {
-								int nextX = checkingTile.getCoor()[0]+i;
-								int nextY = checkingTile.getCoor()[1]+j;
+								int nextX = checkingTile.getCoor().getX()+i;
+								int nextY = checkingTile.getCoor().getY()+j;
 								if (nextX>=0&&nextX<boardWidth&&nextY>=0&&nextY<boardHeight) {
 									Tile nextTile = tileArray[nextX][nextY];
 									if (nextTile instanceof NumberTile) {
