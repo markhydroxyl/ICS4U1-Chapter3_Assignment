@@ -6,10 +6,11 @@ public class MineTile extends Tile {
 	}
 
 	@Override
-	public void onReveal() {
+	public int onReveal() {
 		// TODO Auto-generated method stub
 		// Tell MinesweeperGame that the game has been lost, reveal all tiles to player
-		// Tell game to modify socre appropriately
+		// Tell game to modify score appropriately
+		return -1;
 	}
 
 	@Override

@@ -14,10 +14,11 @@ public class NumberTile extends Tile {
 	}
 
 	@Override
-	public void onReveal() {
-		// TODO Auto-generated method stub
+	public int onReveal() {
 		//Reveal yourself
-		// Tell game to modify socre appropriately
+		// Tell game to modify score appropriately
+		this.revealed = true;
+		return 0;
 	}
 
 	@Override

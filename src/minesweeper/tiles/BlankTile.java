@@ -1,7 +1,5 @@
 package minesweeper.tiles;
 
-import java.util.ArrayList;
-
 public class BlankTile extends Tile {
 	
 	public BlankTile(int[] aCoor) {
@@ -9,15 +7,10 @@ public class BlankTile extends Tile {
 	}
 
 	@Override
-	public void onReveal() {
-		// TODO Auto-generated method stub
+	public int onReveal() {
 		//Search for all other adjacent blank tiles and reveal
-		// Tell game to modify socre appropriately
-	}
-	
-	public void search() {
-		//BFS algorithm to find all adjacent blank tiles
-		ArrayList<Tile> toBeSearched = new ArrayList<Tile>();
+		// Tell game to modify score appropriately
+		return 1;
 	}
 
 	@Override

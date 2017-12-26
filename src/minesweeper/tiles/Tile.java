@@ -9,7 +9,7 @@ public abstract class Tile {
 		this.coor = aCoor;
 	}
 	
-	public abstract void onReveal();
+	public abstract int onReveal();
 	
 	public boolean isRevealed() {
 		return revealed;
@@ -21,6 +21,14 @@ public abstract class Tile {
 	
 	public int[] getCoor() {
 		return coor;
+	}
+	
+	public void setReveal() {
+		revealed = !revealed;
+	}
+	
+	public void setFlag() {
+		flagged = !flagged;
 	}
 	
 	public abstract void onHighlight();

@@ -3,7 +3,7 @@ package minesweeper;
 public class MinesweeperGame {
 	private boolean gameWin;
 	private boolean gameOver;
-	private GameBoard gameBoard;
+	public GameBoard gameBoard;
 	
 	public MinesweeperGame() {}
 	

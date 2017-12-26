@@ -17,12 +17,13 @@ public class Display {
 					System.out.print("F ");
 				} else if (!aArray[i][j].isRevealed()) {
 					System.out.print("x ");
-				} else if (aArray[i][j].getClass() == MineTile.class) {
+				} else if (aArray[i][j] instanceof MineTile) {
 					System.out.print("M ");
-				} else if (aArray[i][j].getClass() == BlankTile.class) {
+				} else if (aArray[i][j] instanceof BlankTile) {
 					System.out.print("  ");
-				} else if (aArray[i][j].getClass() == NumberTile.class) {
-					System.out.print(((NumberTile) aArray[i][j]).getNumAdjMines() + " ");
+				} else if (aArray[i][j] instanceof NumberTile) {
+					int numMines=((NumberTile) aArray[i][j]).getNumAdjMines() ;
+					System.out.print(numMines + " ");
 				}
 			}
 		}
