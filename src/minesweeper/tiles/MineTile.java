@@ -6,9 +6,9 @@ public class MineTile extends Tile {
 
 	@Override
 	public int onReveal() {
-		// TODO Auto-generated method stub
 		// Tell MinesweeperGame that the game has been lost, reveal all tiles to player
 		// Tell game to modify score appropriately
+		this.setRevealTrue();
 		return -1;
 	}
 

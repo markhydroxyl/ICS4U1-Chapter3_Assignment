@@ -17,8 +17,8 @@ public abstract class Tile {
 		return flagged;
 	}
 	
-	public void setReveal() {
-		revealed = !revealed;
+	public void setRevealTrue() {
+		revealed = true;
 	}
 	
 	public void setFlag() {

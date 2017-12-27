@@ -9,6 +9,7 @@ public class BlankTile extends Tile {
 	public int onReveal() {
 		//Search for all other adjacent blank tiles and reveal
 		// Tell game to modify score appropriately
+		this.setRevealTrue();
 		return 1;
 	}
 

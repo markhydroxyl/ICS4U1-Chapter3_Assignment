@@ -1,6 +1,7 @@
 package minesweeper;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import minesweeper.gameInteraction.*;
 import minesweeper.gameInteraction.scoreMethods.*;
@@ -24,6 +25,10 @@ public class GameBoard {
 		this.boardHeight = aHeight;
 		this.mineCount = Math.min(aMineCount, aWidth*aHeight);
 		this.score = new ClassicalScore();
+		this.display = new Display();
+		this.tileArray = new Tile[boardWidth][boardHeight];
+		this.time = new Timer();
+		System.out.println("boardWidth: "+boardWidth+"\nboardHeight: "+boardHeight+"\nmineCount: "+mineCount+"\ntileArray.length: "+tileArray.length+"\ntileArray[0].length: "+tileArray[0].length);
 	}
 	
 	public GameBoard(int aWidth, int aHeight, double aMineDensity) {
@@ -33,19 +38,32 @@ public class GameBoard {
 		this.boardWidth = aWidth;
 		this.mineCount = Math.min(aWidth*aHeight, (int) aMineDensity*aWidth*aHeight);
 		this.score = new ClassicalScore();
+		this.display = new Display();
+		this.time = new Timer();
+		this.tileArray = new Tile[boardWidth][boardHeight];
 	}
 	
 	public void display() {
 		this.display.display(tileArray);
 	}
 	
+	public void timeIncrease() {
+		time.incrementTime();
+	}
+
+	public int getTime() {
+		return time.getTime();
+	}
+	
 	private void addMines() {
 		boolean mineSet = false;
 		for (int i=0; i<mineCount; i++) {
+			Random seedGenerator = new Random();
 			while(!mineSet) {
-				int nextX = (int)(Math.random()*boardWidth);
-				int nextY = (int)(Math.random()*boardHeight);
+				int nextX = seedGenerator.nextInt(10);
+				int nextY = seedGenerator.nextInt(10);
 				if (!(getTile(nextX, nextY) instanceof MineTile)) {
+					System.out.println("Setting a mine at "+ nextX+" "+nextY);
 					setTile(nextX, nextY, new MineTile());
 					mineSet = true;
 				}
@@ -56,17 +74,20 @@ public class GameBoard {
 	
 	public void generate() {
 		//Generate a grid of Tiles
-		tileArray = new Tile[boardWidth][boardHeight];
 		addMines();
+		display();
 		
 		for (int i=0; i<boardWidth; i++) {
 			for (int j=0; j<boardHeight; j++) {
-				int count = countAdjMines(new BoardPosition(i, j));
-				if (count != 0) {
-					setTile(i, j, new NumberTile(count));
-				} else {
-					setTile(i, j, new BlankTile());
+				if (!(getTile(i, j) instanceof MineTile)) {
+					int count = countAdjMines(new BoardPosition(i, j));
+					if (count != 0) {
+						setTile(i, j, new NumberTile(count));
+					} else {
+						setTile(i, j, new BlankTile());
+					}
 				}
+				
 			}
 		}
 	}
@@ -78,7 +99,7 @@ public class GameBoard {
 			for (int y=-1; y<=1; y++) {
 				nextX = coor.getX()+x;
 				nextY = coor.getY()+y;
-				if ((x!=0&&y!=0)&&getTile(nextX, nextY) instanceof MineTile) {
+				if ((nextX>=0&&nextX<boardWidth&&nextY>=0&&nextY<boardHeight)&&!(x==0&&y==0)&&getTile(nextX, nextY) instanceof MineTile) {
 					count++;
 				}
 			}
@@ -101,21 +122,21 @@ public class GameBoard {
 			int result = toReveal.onReveal();
 			if (result == -1) {
 				score.modifyScore(-1);
-				revealAll();
-				return new boolean[] {true, false};
+				System.out.println("Hit mine");
 			} else if (result == 0) {
 				score.modifyScore(0);
-				return checkWin();
+				System.out.println("Hit number");
 			} else if (result == 1) {
-				score.modifyScore(countAndRevealAdjBlanks(coor));
-				return checkWin();
+				int count = countAndRevealAdjBlanks(coor);
+				score.modifyScore(count);
+				System.out.println("Hit blank, revealed "+count);
 			}
 		}
-		return new boolean[] {false, false};
+		return checkWin();
 	}
 	
 	private int countAndRevealAdjBlanks(BoardPosition coor) {
-		int counter = 1;
+		int counter = 0;
 		ArrayList<BoardPosition> posToBeChecked = new ArrayList<BoardPosition>();
 		posToBeChecked.add(coor);
 		while(!posToBeChecked.isEmpty()) {
@@ -129,7 +150,7 @@ public class GameBoard {
 							Tile nextTile=getTile(nextX, nextY);
 							if (!nextTile.isRevealed()) {
 								counter++;
-								nextTile.setReveal();
+								nextTile.setRevealTrue();
 								if (nextTile instanceof BlankTile) {
 									posToBeChecked.add(new BoardPosition(nextX, nextY));
 								}
@@ -145,25 +166,35 @@ public class GameBoard {
 	private void revealAll() {
 		for (int i=0; i<boardWidth; i++) {
 			for (int j=0; j<boardHeight; j++) {
-				if (!getTile(i, j).isRevealed()&&!getTile(i, j).isFlagged()) {
-					getTile(i, j).setReveal();
-				} else if (getTile(i, j).isFlagged()&&getTile(i, j) instanceof MineTile) {
-					//Logic for showing that it was incorrectly flagged
-				}
+				getTile(i, j).setRevealTrue();
+//				if (!getTile(i, j).isRevealed()&&!getTile(i, j).isFlagged()) {
+//					getTile(i, j).setRevealTrue();
+//				} else if (getTile(i, j).isFlagged()&&getTile(i, j) instanceof MineTile) {
+//					//Logic for showing that it was incorrectly flagged
+//				}
 			}
 		}
 	}
 	
 	public boolean[] checkWin() {
+		boolean gameOver = false;
+		boolean gameWon = true;
 		for (int i=0; i<boardWidth; i++) {
 			for (int j=0; j<boardHeight; j++) {
-				if (getTile(i, j) instanceof MineTile && !getTile(i, j).isRevealed()) {
-					return new boolean[] {false, false};
+				if (getTile(i, j) instanceof MineTile && getTile(i, j).isRevealed()) {
+					revealAll();
+					gameOver = true;
+					gameWon = false;
+					break;
+				}
+				if (!(getTile(i, j) instanceof MineTile) && !getTile(i, j).isRevealed()) {
+					gameWon = false;
 				}
 			}
+			if (gameOver)
+				break;
 		}
-		
-		return new boolean[] {true, true};
+		return new boolean[] {gameOver, gameWon};
 	}
 	
 	private Tile getTile(int x, int y) {
