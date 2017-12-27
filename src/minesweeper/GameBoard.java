@@ -3,6 +3,7 @@ package minesweeper;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javafx.scene.layout.Pane;
 import minesweeper.gameInteraction.*;
 import minesweeper.gameInteraction.scoreMethods.*;
 import minesweeper.inputHandlers.*;
@@ -28,7 +29,7 @@ public class GameBoard {
 		this.display = new Display();
 		this.tileArray = new Tile[boardWidth][boardHeight];
 		this.time = new Timer();
-		System.out.println("boardWidth: "+boardWidth+"\nboardHeight: "+boardHeight+"\nmineCount: "+mineCount+"\ntileArray.length: "+tileArray.length+"\ntileArray[0].length: "+tileArray[0].length);
+//		System.out.println("boardWidth: "+boardWidth+"\nboardHeight: "+boardHeight+"\nmineCount: "+mineCount+"\ntileArray.length: "+tileArray.length+"\ntileArray[0].length: "+tileArray[0].length);
 	}
 	
 	public GameBoard(int aWidth, int aHeight, double aMineDensity) {
@@ -43,8 +44,8 @@ public class GameBoard {
 		this.tileArray = new Tile[boardWidth][boardHeight];
 	}
 	
-	public void display() {
-		this.display.display(tileArray);
+	public void display(Pane aRoot) {
+		this.display.display(tileArray, aRoot);
 	}
 	
 	public void timeIncrease() {
@@ -63,7 +64,7 @@ public class GameBoard {
 				int nextX = seedGenerator.nextInt(10);
 				int nextY = seedGenerator.nextInt(10);
 				if (!(getTile(nextX, nextY) instanceof MineTile)) {
-					System.out.println("Setting a mine at "+ nextX+" "+nextY);
+//					System.out.println("Setting a mine at "+ nextX+" "+nextY);
 					setTile(nextX, nextY, new MineTile());
 					mineSet = true;
 				}
@@ -75,7 +76,7 @@ public class GameBoard {
 	public void generate() {
 		//Generate a grid of Tiles
 		addMines();
-		display();
+		//display();
 		
 		for (int i=0; i<boardWidth; i++) {
 			for (int j=0; j<boardHeight; j++) {
