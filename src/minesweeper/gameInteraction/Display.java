@@ -18,14 +18,14 @@ public class Display {
 		for (int row=0; row<aArray.length; row++) {
 			for (int col=0; col<aArray[0].length; col++) {
 				Canvas tileCanvas = new Canvas();
-				aArray[row][col].displayTile(tileCanvas, row, col, aRoot, MinesweeperConstants.X_OFFSET, MinesweeperConstants.Y_OFFSET);
+				aArray[row][col].displayTile(tileCanvas, row, col, aRoot);
 			}
 		}
 		
 		drawLines(aRoot, aArray.length, aArray[0].length);
 		
 		//Print game to console for reference
-		printToConsole(aArray);
+//		printToConsole(aArray);
 	}
 	
 	private void drawLines(Pane aRoot, int numRows, int numCols) {

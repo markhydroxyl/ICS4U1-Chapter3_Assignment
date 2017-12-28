@@ -2,12 +2,13 @@ package minesweeper.tiles;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
+import util.MinesweeperConstants;
 
 public abstract class Tile {
 	protected boolean revealed;
 	protected boolean flagged;
-	protected final int tileWidth = 40;
-	protected final int tileHeight = 40;
+	protected final int tileWidth = MinesweeperConstants.TILE_WIDTH;
+	protected final int tileHeight = MinesweeperConstants.TILE_HEIGHT;
 	
 	public Tile() {
 		this.revealed = false;
@@ -42,7 +43,7 @@ public abstract class Tile {
 	
 	public abstract void onHighlight();
 	
-	public void displayTile(Canvas aCanvas, int aRow, int aCol, Pane aRoot, int xOffset, int yOffset) {
+	public void displayTile(Canvas aCanvas, int aRow, int aCol, Pane aRoot) {
 		aCanvas.setWidth(tileWidth);
 		aCanvas.setHeight(tileHeight);
 	}

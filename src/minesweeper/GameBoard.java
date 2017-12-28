@@ -37,14 +37,15 @@ public class GameBoard {
 		//aMineDensity cannot be greater than 1!
 		this.boardHeight = aHeight;
 		this.boardWidth = aWidth;
-		this.mineCount = Math.min(aWidth*aHeight, (int) aMineDensity*aWidth*aHeight);
+		this.mineCount = Math.min(aWidth*aHeight, (int) (aMineDensity*aWidth*aHeight));
+		System.out.println("Mine count: "+mineCount);
 		this.score = new ClassicalScore();
 		this.display = new Display();
 		this.time = new Timer();
 		this.tileArray = new Tile[boardWidth][boardHeight];
 	}
 	
-	public void display(Pane aRoot) {
+	public void render(Pane aRoot) {
 		this.display.display(tileArray, aRoot);
 	}
 	
@@ -137,7 +138,7 @@ public class GameBoard {
 	}
 	
 	private int countAndRevealAdjBlanks(BoardPosition coor) {
-		int counter = 0;
+		int counter = 1;
 		ArrayList<BoardPosition> posToBeChecked = new ArrayList<BoardPosition>();
 		posToBeChecked.add(coor);
 		while(!posToBeChecked.isEmpty()) {
@@ -196,6 +197,10 @@ public class GameBoard {
 				break;
 		}
 		return new boolean[] {gameOver, gameWon};
+	}
+	
+	public Tile[][] getTileArray() {
+		return tileArray;
 	}
 	
 	private Tile getTile(int x, int y) {

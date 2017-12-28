@@ -1,11 +1,18 @@
 package minesweeper;
 
-public class MinesweeperGame {
+import util.Game;
+import util.MinesweeperConstants;
+
+public class MinesweeperGame extends Game {
 	private boolean gameWin;
 	private boolean gameOver;
 	public GameBoard gameBoard;
 	
 	public MinesweeperGame() {}
+	
+	public void newGame() {
+		gameBoard = new GameBoard(MinesweeperConstants.DEFAULT_NUM_ROWS, MinesweeperConstants.DEFAULT_NUM_COLS, MinesweeperConstants.DEFAULT_MINE_DENSITY);
+	}
 	
 	public void newGame(int aWidth, int aHeight, int aMineCount) {
 		gameBoard = new GameBoard(aWidth, aHeight, aMineCount);
@@ -17,15 +24,15 @@ public class MinesweeperGame {
 		gameBoard.generate();
 	}
 	
-	public String getState() {
+	public byte getState() {
 		boolean[] a = gameBoard.checkWin();
 		gameOver = a[0];
 		gameWin = a[1];
 		if (gameWin) {
-			return "win";
+			return 1;
 		} else if (gameOver&&!gameWin) {
-			return "lose";
+			return -1;
 		}
-		return null;
+		return 0;
 	}
 }
