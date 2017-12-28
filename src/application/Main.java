@@ -10,13 +10,14 @@ import util.Difficulty;
 import util.Game;
 import util.MinesweeperConstants;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+//import javafx.scene.canvas.Canvas;
+//import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 //import javafx.scene.input.KeyEvent;
 //import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
+//import javafx.scene.paint.Color;
 
 //import java.util.Scanner;
 
@@ -24,7 +25,7 @@ import javafx.scene.paint.Color;
 public class Main extends Application {
 	Pane root = new Pane();
 	Scene scene = new Scene(root, 500, 500);
-	Difficulty gameMode = Difficulty.EASY; //TODO change this to proper form
+	Difficulty gameMode = Difficulty.EASY;
 	boolean minesweeper = false;
 	boolean reversi = false;
 	Game curGame;
@@ -33,66 +34,43 @@ public class Main extends Application {
 		@Override
 		public void handle(MouseEvent event) {
 			if (minesweeper) {
-				double clickX = event.getScreenX()-MinesweeperConstants.X_OFFSET;
-				double clickY = event.getScreenY()-MinesweeperConstants.Y_OFFSET;
+				double clickX = event.getScreenX()-MinesweeperConstants.X_OFFSET - (scene.getWindow().getX()+scene.getX());
+				double clickY = event.getScreenY()-MinesweeperConstants.Y_OFFSET - (scene.getWindow().getY()+scene.getY());
 				System.out.println("Clicked at: ("+clickX+", "+clickY+")");
+				boolean inBounds = false;
 				
-				if(clickX>0 && clickY>0) {
-					if (gameMode.toString().equals("EASY") && 
-							clickX < MinesweeperConstants.EASY_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
-							clickY < MinesweeperConstants.EASY_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET) {
-						int x = (int)(clickX)/MinesweeperConstants.TILE_WIDTH;
-						int y = (int)(clickY)/MinesweeperConstants.TILE_HEIGHT;
-						System.out.println("x: "+x+", y: "+y);
+				if((clickX>0 && clickY>0)&&((gameMode.equals(Difficulty.EASY) && 
+								clickX < MinesweeperConstants.EASY_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
+								clickY < MinesweeperConstants.EASY_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET)||
+						(gameMode.equals(Difficulty.MEDIUM) && 
+									clickX < MinesweeperConstants.MED_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
+								clickY < MinesweeperConstants.MED_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET)||
+						(gameMode.equals(Difficulty.HARD) && 
+								clickX < MinesweeperConstants.HARD_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
+								clickY < MinesweeperConstants.HARD_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET)||
+						(gameMode.equals(Difficulty.LUNATIC) && 
+								clickX < MinesweeperConstants.LUNA_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
+								clickY < MinesweeperConstants.LUNA_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET))) {
+					inBounds = true;
+				}
+				
+				if (inBounds) {
+					int x = (int)(clickX)/MinesweeperConstants.TILE_WIDTH;
+					int y = (int)(clickY)/MinesweeperConstants.TILE_HEIGHT;
+					if (event.getButton().equals(MouseButton.PRIMARY)) {
 						((MinesweeperGame) curGame).gameBoard.onReveal(new BoardPosition(x, y));
-						System.out.println("Clicked on: ("+x+", "+y+")");
-					} else if (gameMode.toString().equals("MEDIUM")&& 
-							clickX < MinesweeperConstants.MED_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
-							clickY < MinesweeperConstants.MED_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET) {
-						int x = (int)(clickX)/MinesweeperConstants.TILE_WIDTH;
-						int y = (int)(clickY)/MinesweeperConstants.TILE_HEIGHT;
-						((MinesweeperGame) curGame).gameBoard.onReveal(new BoardPosition(x, y));
-					} else if (gameMode.toString().equals("HARD")&& 
-							clickX < MinesweeperConstants.HARD_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
-							clickY < MinesweeperConstants.HARD_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET) {
-						int x = (int)(clickX)/MinesweeperConstants.TILE_WIDTH;
-						int y = (int)(clickY)/MinesweeperConstants.TILE_HEIGHT;
-						((MinesweeperGame) curGame).gameBoard.onReveal(new BoardPosition(x, y));
-					} else if (gameMode.toString().equals("LUNATIC")&& 
-							clickX < MinesweeperConstants.LUNA_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
-							clickY < MinesweeperConstants.LUNA_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET) {
-						int x = (int)(clickX)/MinesweeperConstants.TILE_WIDTH;
-						int y = (int)(clickY)/MinesweeperConstants.TILE_HEIGHT;
-						((MinesweeperGame) curGame).gameBoard.onReveal(new BoardPosition(x, y));
+						System.out.print("Dug ");
+					} else if (event.getButton().equals(MouseButton.SECONDARY)) {
+						((MinesweeperGame) curGame).gameBoard.onFlag(new BoardPosition(x, y));
+						System.out.print("Flagged ");
 					}
+					System.out.println(" on: ("+x+", "+y+")");
 				}
 			}
 			
 			event.consume();
 		}
 	};
-	
-//	@Override
-//	public void test(Stage primaryStage) {
-//		Canvas canvas = new Canvas(400, 200);
-//		// Get the graphics context of the canvas
-//		GraphicsContext gc = canvas.getGraphicsContext2D();
-//		// Set line width
-//		gc.setLineWidth(1.0);
-//		// Set fill color
-//		gc.setFill(Color.BLUE);
-//		
-//		// Draw a Text
-//		gc.fillText("This is a stroked Text", 10, 50);
-//		
-//		gc.setFill(Color.RED);
-//		
-//		Pane aRoot = new Pane();
-//		aRoot.getChildren().add(canvas);
-//		Scene aScene = new Scene(aRoot);
-//		primaryStage.setScene(aScene);
-//		primaryStage.show();
-//	}
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -111,57 +89,27 @@ public class Main extends Application {
 		((MinesweeperGame) curGame).gameBoard.render(root);
 		
 		scene.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseClickEvent);
-		scene.setOnMouseClicked(mouseClickEvent);
 		
 		new AnimationTimer() {
 			@Override
 			public void handle(long time) {
 				((MinesweeperGame) curGame).gameBoard.timeIncrease();
 //				if(time%20 == 0) {
-					if (curGame.getState() != 0) {
-						primaryStage.close();
+					if (curGame.getState() == 1) {
+						System.out.println("You won!");
 						stop();
-					} else
-						((MinesweeperGame) curGame).gameBoard.render(root);
+					} else if (curGame.getState() == -1) {
+						System.out.println("You lost...");
+						stop();
+					}
+					
+					((MinesweeperGame) curGame).gameBoard.render(root);
 				}
 //			}
 		}.start();
 	}
-	
-//	public static void lanuchMinesweeper() {
-//		Scanner in = new Scanner(System.in);
-//		MinesweeperGame game = new MinesweeperGame();
-//		game.newGame(10, 10, 15);
-//		game.gameBoard.display(root);
-//		
-//		boolean gameOver = false;
-//		while(!gameOver) {
-//			int xCoor = in.nextInt();
-//			int yCoor = in.nextInt();
-//			String instruction = in.nextLine();
-//			if (instruction.length()<2) {
-//				System.out.println("Please include a \'D\' for digging, or an \'F\' for flagging.");
-//			} else if (instruction.charAt(1) == 'D') {
-//				game.gameBoard.onReveal(new BoardPosition(xCoor, yCoor));
-//				game.gameBoard.display(root);
-//			} else if (instruction.charAt(1) == 'F') {
-//				game.gameBoard.onFlag(new BoardPosition(xCoor, yCoor));
-//				game.gameBoard.display(root);
-//			}
-//			gameOver = game.getState()!=null? true: false;
-//		}
-//		
-//		if(game.getState().equals("win")) {
-//			System.out.println("You won!");
-//		} else {
-//			System.out.println("You lose...");
-//		}
-//		
-//		in.close();
-//	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
-//		lanuchMinesweeper();
 	}
 }
