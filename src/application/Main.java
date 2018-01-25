@@ -52,9 +52,6 @@ public class Main extends Application {
 	}
 
 	public void reversiObjectSetUp() {
-		// for(int count = 1; count <=64; count++){
-		// ReversiPiece a = new ReversiPiece(count);
-		// }
 		reversiObjects = new ArrayList<ReversiPiece>();
 		for (int i = 1; i <= 64; i++) {
 			reversiObjects.add(new ReversiPiece(i));

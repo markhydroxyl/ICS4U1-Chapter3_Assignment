@@ -14,23 +14,26 @@ public class ReversiPiece extends ReversiBoard {
 		this.gridSpace = gridspace;
 	}
 
-	public void getCoords() {
-		// Initializes a pieces x and y coordinates based on the pieces grid space.
-		this.buttonX = 80 * (this.gridSpace % 8);
-		this.buttonY = 80 * (this.gridSpace / 8);
+	public void setCoords() {
+		// Initializes a pieces x and y coordinates based on the pieces grid
+		// space.
+		this.buttonX = 80 * ((this.gridSpace - 1) % 8);
+		this.buttonY = 80 * ((this.gridSpace - 1) / 8);
 	}
-	
+
 	public void initializeButton() {
 		this.button = new Button();
-		this.getCoords();
+		this.setCoords();
 		this.button.setLayoutX(this.buttonX);
 		this.button.setLayoutY(this.buttonY);
 		this.button.setText(String.valueOf(gridSpace));
+		this.button.setMinWidth(80);
+		this.button.setMinHeight(80);
 		int x = this.gridSpace;
 		this.button.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				System.out.println(x);
 			}
 		});
-	}	
+	}
 }
