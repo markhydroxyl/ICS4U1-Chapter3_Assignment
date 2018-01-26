@@ -23,8 +23,8 @@ public class ReversiBoard extends ReversiGrid {
 		reversiStage.sizeToScene();
 		reversiStage.show();
 	}
-	public void drawButtons(){
-		Button o = new Button();//place holder
-		this.root2.getChildren().add(o);
-	} 
+//	public void drawButtons(){
+//		Button o = new Button();//place holder
+//		this.root2.getChildren().add(o);
+//	} 
 }

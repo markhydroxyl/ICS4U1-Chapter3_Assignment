@@ -2,8 +2,9 @@ package application;
 
 
 public abstract class ReversiGrid {
-	public static boolean tileOccupied[] = new boolean[64];
+	public static boolean tileOccupied[][] = new boolean[8][8];
 	public int gridSpace; 
+	public static int turnCount = 0;
 	
 	//grid space returns your space on the grid
 	// 1	2	3	4	5	6	7	8

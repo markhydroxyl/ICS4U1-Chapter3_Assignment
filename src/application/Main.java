@@ -14,9 +14,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-
 public class Main extends Application {
-	public List<ReversiPiece> reversiObjects;
+	public ReversiPiece[][] reversiObjects = new ReversiPiece[8][8];
+	public int setup = 1;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -37,8 +37,10 @@ public class Main extends Application {
 					start.drawBoard();
 					primaryStage.close();
 					reversiObjectSetUp();
-					for (int i = 0; i < 64; i++) {
-						start.root2.getChildren().add(reversiObjects.get(i).button);
+					for (int i = 0; i < 8; i++) {
+						for (int t = 0; t < 8; t++) {
+							start.root2.getChildren().add(reversiObjects[i][t].button);
+						}
 					}
 				}
 			});
@@ -52,12 +54,17 @@ public class Main extends Application {
 	}
 
 	public void reversiObjectSetUp() {
-		reversiObjects = new ArrayList<ReversiPiece>();
-		for (int i = 1; i <= 64; i++) {
-			reversiObjects.add(new ReversiPiece(i));
-		}
-		for (int i = 0; i < 64; i++) {
-			reversiObjects.get(i).initializeButton();
+		// for (int i = 1; i <= 64; i++) {
+		// reversiObjects[0][0]
+		// }
+		// for (int i = 0; i < 64; i++) {
+		// reversiObjects[0][0].initializeButton();
+		// }
+		for (int i = 0; i < 8; i++) {
+			for (int t = 0; t < 8; t++, setup++) {
+				reversiObjects[i][t].gridSpace = setup;
+				reversiObjects[i][t].initializeButton();
+			}
 		}
 	}
 }
