@@ -17,7 +17,10 @@ public class ReversiBoard extends ReversiGrid {
 		root2 = new Pane();
 		board = new Scene(root2, BoardSizeX, BoardSizeY);
 		board.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		
 		reversiStage.setScene(board);
+		reversiStage.setResizable(false);
+		reversiStage.sizeToScene();
 		reversiStage.show();
 	}
 	public void drawButtons(){

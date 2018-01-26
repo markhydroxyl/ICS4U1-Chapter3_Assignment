@@ -11,9 +11,9 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+
 
 public class Main extends Application {
 	public List<ReversiPiece> reversiObjects;

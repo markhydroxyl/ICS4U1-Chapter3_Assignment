@@ -1,11 +1,13 @@
 package application;
 
+import java.io.File;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
 public class ReversiPiece extends ReversiBoard {
-	public String colour;
+	public String colour = "green";
 	public int buttonX;
 	public int buttonY;
 	public Button button;
@@ -29,11 +31,26 @@ public class ReversiPiece extends ReversiBoard {
 		this.button.setText(String.valueOf(gridSpace));
 		this.button.setMinWidth(80);
 		this.button.setMinHeight(80);
+		this.setColor(this.colour);
 		int x = this.gridSpace;
+		int y = gridSpace - 1;
 		this.button.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				System.out.println(x);
+				if (tileOccupied[y] == false) {
+					tileOccupied[y] = true;
+					System.out.println(x);
+				}
 			}
 		});
+	}
+
+	public void setColor(String a) {
+		if (a.equals("green")) {
+			this.button.setStyle("-fx-base: #228B22;");
+		} else if (a.equals("black")) {
+			this.button.setStyle("-fx-base: #000000;");
+		} else if (a.equals("white")) {
+			this.button.setStyle("-fx-base: #ffffff;");
+		}
 	}
 }

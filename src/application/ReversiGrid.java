@@ -2,7 +2,7 @@ package application;
 
 
 public abstract class ReversiGrid {
-	public boolean tileOccupied[] = new boolean[64];
+	public static boolean tileOccupied[] = new boolean[64];
 	public int gridSpace; 
 	
 	//grid space returns your space on the grid
@@ -14,6 +14,5 @@ public abstract class ReversiGrid {
 	// 41	42	43	44	45	46	47	48
 	// 49	50	51	52	53	54	55	56
 	// 57	58	59	60	61	62	63	64
-	
 	
 }
