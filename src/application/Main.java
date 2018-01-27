@@ -36,7 +36,7 @@ public class Main extends Application {
 					ReversiBoard start = new ReversiBoard();
 					start.drawBoard();
 					primaryStage.close();
-					reversiObjectSetUp();
+					reversiBoardSetUp();
 					for (int i = 0; i < 8; i++) {
 						for (int t = 0; t < 8; t++) {
 							start.root2.getChildren().add(reversiObjects[i][t].button);
@@ -53,18 +53,21 @@ public class Main extends Application {
 		launch(args);
 	}
 
-	public void reversiObjectSetUp() {
-		// for (int i = 1; i <= 64; i++) {
-		// reversiObjects[0][0]
-		// }
-		// for (int i = 0; i < 64; i++) {
-		// reversiObjects[0][0].initializeButton();
-		// }
+	public void reversiBoardSetUp() {
 		for (int i = 0; i < 8; i++) {
 			for (int t = 0; t < 8; t++, setup++) {
 				reversiObjects[i][t] = new ReversiPiece(setup);
 				reversiObjects[i][t].initializeButton();
 			}
 		}
+		//sets up 4 starting tiles
+		reversiObjects[3][3].setColor("white");
+		reversiObjects[3][3].tileOccupied[3][3] = true;
+		reversiObjects[4][4].setColor("white");
+		reversiObjects[4][4].tileOccupied[4][4] = true;
+		reversiObjects[3][4].setColor("black");
+		reversiObjects[3][4].tileOccupied[3][4] = true;
+		reversiObjects[4][3].setColor("black");
+		reversiObjects[4][3].tileOccupied[4][3] = true;
 	}
 }

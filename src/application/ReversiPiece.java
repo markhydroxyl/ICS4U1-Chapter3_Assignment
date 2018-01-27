@@ -31,8 +31,8 @@ public class ReversiPiece extends ReversiBoard {
 		this.button.setMinWidth(80);
 		this.button.setMinHeight(80);
 		this.setColor(this.colour);
-//		int x = this.gridSpace;
-//		int y = gridSpace - 1;
+		// int x = this.gridSpace;
+		// int y = gridSpace - 1;
 		int x = (this.gridSpace - 1) / 8;
 		int y = (this.gridSpace - 1) % 8;
 		this.button.setOnAction(new EventHandler<ActionEvent>() {
