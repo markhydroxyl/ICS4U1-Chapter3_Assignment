@@ -39,7 +39,7 @@ public class ReversiPiece extends ReversiBoard {
 			public void handle(ActionEvent event) {
 				if (tileOccupied[x][y] == false) {
 					tileOccupied[x][y] = true;
-					System.out.println(x);
+					System.out.println(gridSpace);
 				}
 			}
 		});
