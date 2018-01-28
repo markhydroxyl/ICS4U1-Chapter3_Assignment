@@ -58,17 +58,40 @@ public class Main extends Application {
 			for (int t = 0; t < 8; t++, setup++) {
 				reversiObjects[i][t] = new ReversiPiece(setup);
 				reversiObjects[i][t].initializeButton();
+
 			}
+			// sets up 4 starting tiles
+			reversiObjects[3][3].setColor("white");
+			reversiObjects[3][3].tileOccupied[3][3] = true;
+			reversiObjects[4][4].setColor("white");
+			reversiObjects[4][4].tileOccupied[4][4] = true;
+			reversiObjects[3][4].setColor("black");
+			reversiObjects[3][4].tileOccupied[3][4] = true;
+			reversiObjects[4][3].setColor("black");
+			reversiObjects[4][3].tileOccupied[4][3] = true;
 		}
-		//sets up 4 starting tiles
-		reversiObjects[3][3].setColor("white");
-		reversiObjects[3][3].tileOccupied[3][3] = true;
-		reversiObjects[4][4].setColor("white");
-		reversiObjects[4][4].tileOccupied[4][4] = true;
-		reversiObjects[3][4].setColor("black");
-		reversiObjects[3][4].tileOccupied[3][4] = true;
-		reversiObjects[4][3].setColor("black");
-		reversiObjects[4][3].tileOccupied[4][3] = true;
 	}
 
+	public boolean validMove(ReversiPiece piece, ReversiPiece[][] pieceArray) {
+		boolean x = false;
+		for (int i = -1; i < 2; i++) {
+			String a = pieceArray[piece.array1 - 1][piece.array2 + i].colour;
+			if (!(a.equals(piece.colour)) && !(a.equals("green"))) {
+				x = true;
+			}
+		}
+		for (int i = -1; i < 2; i += 2) {
+			String a = pieceArray[piece.array1][piece.array2 + i].colour;
+			if (!(a.equals(piece.colour)) && !(a.equals("green"))) {
+				x = true;
+			}
+		}
+		for (int i = -1; i < 2; i++) {
+			String a = pieceArray[piece.array1 + 1][piece.array2 + i].colour;
+			if (!(a.equals(piece.colour)) && !(a.equals("green"))) {
+				x = true;
+			}
+		}
+		return x;
+	}
 }

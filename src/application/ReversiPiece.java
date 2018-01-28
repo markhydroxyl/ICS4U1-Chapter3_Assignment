@@ -41,17 +41,15 @@ public class ReversiPiece extends ReversiBoard {
 		int y = (this.gridSpace - 1) % 8;
 		this.button.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				if (tileOccupied[x][y] == false) {
-					tileOccupied[x][y] = true;
-					if (turnCount % 2 == 0) {
+				if (ReversiPiece.tileOccupied[x][y] == false) {
+					ReversiPiece.tileOccupied[x][y] = true;
+					if (ReversiPiece.turnCount % 2 == 0) {
 						setColor("white");
-					} else if (turnCount % 2 == 1) {
+					} else if (ReversiPiece.turnCount % 2 == 1) {
 						setColor("black");
 					}
-					System.out.println(gridSpace + " " + turnCount);
-
-					turnCount++;
-
+					System.out.println(gridSpace + " " + ReversiPiece.turnCount);
+					ReversiPiece.turnCount++;
 				}
 			}
 		});
@@ -65,29 +63,6 @@ public class ReversiPiece extends ReversiBoard {
 		} else if (a.equals("white")) {
 			this.button.setStyle("-fx-base: #ffffff;");
 		}
-	}
-
-	public boolean validMove(ReversiPiece piece, ReversiPiece[][] pieceArray) {
-		boolean x = false;
-		for (int i = -1; i < 2; i++) {
-			String a = pieceArray[piece.array1 - 1][piece.array2 + i].colour;
-			if (!(a.equals(piece.colour)) && !(a.equals("green"))) {
-				x = true;
-			}
-		}
-		for (int i = -1; i < 2; i += 2) {
-			String a = pieceArray[piece.array1][piece.array2 + i].colour;
-			if (!(a.equals(piece.colour)) && !(a.equals("green"))) {
-				x = true;
-			}
-		}
-		for (int i = -1; i < 2; i++) {
-			String a = pieceArray[piece.array1 + 1][piece.array2 + i].colour;
-			if (!(a.equals(piece.colour)) && !(a.equals("green"))) {
-				x = true;
-			}
-		}
-		return x;
 	}
 
 }
