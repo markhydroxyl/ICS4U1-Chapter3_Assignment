@@ -70,4 +70,5 @@ public class Main extends Application {
 		reversiObjects[4][3].setColor("black");
 		reversiObjects[4][3].tileOccupied[4][3] = true;
 	}
+
 }
