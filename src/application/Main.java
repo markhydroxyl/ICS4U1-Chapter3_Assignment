@@ -62,13 +62,13 @@ public class Main extends Application {
 			}
 			// sets up 4 starting tiles
 		}
-		reversiObjects[3][3].setColor("white");
+		reversiObjects[3][3].setColor("w");
 		ReversiPiece.tileOccupied[3][3] = true;
-		reversiObjects[4][4].setColor("white");
+		reversiObjects[4][4].setColor("w");
 		ReversiPiece.tileOccupied[4][4] = true;
-		reversiObjects[3][4].setColor("black");
+		reversiObjects[3][4].setColor("b");
 		ReversiPiece.tileOccupied[3][4] = true;
-		reversiObjects[4][3].setColor("black");
+		reversiObjects[4][3].setColor("b");
 		ReversiPiece.tileOccupied[4][3] = true;
 	}
 

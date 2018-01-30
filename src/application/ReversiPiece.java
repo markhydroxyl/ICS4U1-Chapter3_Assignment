@@ -6,7 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
 public class ReversiPiece extends ReversiBoard {
-	public String colour = "green";
+	public String colour = "g";
 	public int buttonX;
 	public int buttonY;
 	public Button button;
@@ -31,33 +31,29 @@ public class ReversiPiece extends ReversiBoard {
 		this.setCoords();
 		this.button.setLayoutX(this.buttonX);
 		this.button.setLayoutY(this.buttonY);
-		this.button.setText(String.valueOf(gridSpace));
+		this.button.setText(String.valueOf(array1 + "" + array2));
 		this.button.setMinWidth(80);
 		this.button.setMinHeight(80);
-		this.setColor(this.colour);
+		this.setColor("g");
 		// int x = this.gridSpace;
 		// int y = gridSpace - 1;
 		int x = (this.gridSpace - 1) / 8;
 		int y = (this.gridSpace - 1) % 8;
 		this.button.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-
-				if (ReversiPiece.tileOccupied[x][y] == false) {
-					ReversiPiece.tileOccupied[x][y] = true;
-					if (ReversiPiece.turnCount % 2 == 0) {
-						setColor("white");
-					} else if (ReversiPiece.turnCount % 2 == 1) {
-						setColor("black");
-					}
-					// System.out.print(piece.array1);
-					// System.out.println(piece.array2);
-
-					// System.out.println(gridSpace + " " +
-					// ReversiPiece.turnCount);
-					ReversiPiece.turnCount++;
+				String a;
+				if (ReversiPiece.turnCount % 2 == 0) {
+					a = "w";
+				} else {
+					a = "b";
 				}
-				if (validMove(piece, pieceArray)) {
-					System.out.println("VALID");
+
+				if (ReversiPiece.tileOccupied[x][y] == false && validMove(piece, pieceArray, a)) {
+					ReversiPiece.tileOccupied[x][y] = true;
+					piece.setColor(a);
+					System.out.println("INVALID");
+
+					ReversiPiece.turnCount++;
 				} else {
 					System.out.println("INVALID");
 				}
@@ -66,39 +62,33 @@ public class ReversiPiece extends ReversiBoard {
 	}
 
 	public void setColor(String a) {
-		if (a.equals("green")) {
+		if (a.equals("g")) {
 			this.button.setStyle("-fx-base: #228B22;");
-			this.colour = "green";
-		} else if (a.equals("black")) {
+			this.colour = "g";
+		} else if (a.equals("b")) {
 			this.button.setStyle("-fx-base: #000000;");
-			this.colour = "black";
-		} else if (a.equals("white")) {
+			this.colour = "b";
+		} else if (a.equals("w")) {
 			this.button.setStyle("-fx-base: #ffffff;");
-			this.colour = "white";
+			this.colour = "w";
 
 		}
 	}
 
-	public boolean validMove(ReversiPiece piece, ReversiPiece[][] pieceArray) {
+	public boolean validMove(ReversiPiece piece, ReversiPiece[][] pieceArray, String tileColour) {
 		boolean x = false;
 		String a;
+		int r = piece.array1;
+		int l = piece.array2;
 
 		if (piece.array1 != 0 && piece.array1 != 7 && piece.array2 != 0 && piece.array2 != 7) {
 			for (int i = -1; i < 2; i++) {
 				for (int t = -1; t < 2; t++) {
-					if (i != 0 && t != 0) {
-						a = pieceArray[piece.array1 + i][piece.array1 + t].colour;
-						// System.out.println(a + " " + pieceArray[piece.array1
-						// +
-						// i][piece.array1 + t].gridSpace);
-						// System.out.print(piece.array1 + i);
-						// System.out.println(piece.array2 + t);
-						if (!(a.equals(piece.colour)) && !(a.equals("green"))) {
-							x = true;
-							System.out.print(piece.array1 + i);
-							System.out.println(piece.array2 + t);
-							System.out.println(a);
-						}
+					a = pieceArray[r + i][l + t].colour;
+					if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+						x = true;
+						 System.out.print(piece.array1 + i);
+						 System.out.println(piece.array2 + t);
 					}
 				}
 			}
