@@ -24,10 +24,10 @@ public class ReversiPiece extends ReversiBoard {
 		this.buttonY = 80 * ((this.gridSpace - 1) / 8);
 	}
 
-	public void initializeButton(ReversiPiece piece, ReversiPiece[][] pieceArray) {
+	public void initializeButton(ReversiPiece piece, ReversiPiece[][] pieceArray, int arrayX, int arrayY) {
 		this.button = new Button();
-		this.array1 = gridSpace / 8;
-		this.array2 = gridSpace % 8;
+		this.array1 = arrayX;
+		this.array2 = arrayY;
 		this.setCoords();
 		this.button.setLayoutX(this.buttonX);
 		this.button.setLayoutY(this.buttonY);
@@ -41,7 +41,7 @@ public class ReversiPiece extends ReversiBoard {
 		int y = (this.gridSpace - 1) % 8;
 		this.button.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				if (validMove(piece, pieceArray))
+
 				if (ReversiPiece.tileOccupied[x][y] == false) {
 					ReversiPiece.tileOccupied[x][y] = true;
 					if (ReversiPiece.turnCount % 2 == 0) {
@@ -49,8 +49,17 @@ public class ReversiPiece extends ReversiBoard {
 					} else if (ReversiPiece.turnCount % 2 == 1) {
 						setColor("black");
 					}
-					System.out.println(gridSpace + " " + ReversiPiece.turnCount);
+					// System.out.print(piece.array1);
+					// System.out.println(piece.array2);
+
+					// System.out.println(gridSpace + " " +
+					// ReversiPiece.turnCount);
 					ReversiPiece.turnCount++;
+				}
+				if (validMove(piece, pieceArray)) {
+					System.out.println("VALID");
+				} else {
+					System.out.println("INVALID");
 				}
 			}
 		});
@@ -59,32 +68,39 @@ public class ReversiPiece extends ReversiBoard {
 	public void setColor(String a) {
 		if (a.equals("green")) {
 			this.button.setStyle("-fx-base: #228B22;");
+			this.colour = "green";
 		} else if (a.equals("black")) {
 			this.button.setStyle("-fx-base: #000000;");
+			this.colour = "black";
 		} else if (a.equals("white")) {
 			this.button.setStyle("-fx-base: #ffffff;");
+			this.colour = "white";
+
 		}
 	}
-	
+
 	public boolean validMove(ReversiPiece piece, ReversiPiece[][] pieceArray) {
 		boolean x = false;
-		//SWITCH TO NESTED FOR LOOP MAYBE
-		for (int i = -1; i < 2; i++) {
-			String a = pieceArray[piece.array1 - 1][piece.array2 + i].colour;
-			if (!(a.equals(piece.colour)) && !(a.equals("green"))) {
-				x = true;
-			}
-		}
-		for (int i = -1; i < 2; i += 2) {
-			String a = pieceArray[piece.array1][piece.array2 + i].colour;
-			if (!(a.equals(piece.colour)) && !(a.equals("green"))) {
-				x = true;
-			}
-		}
-		for (int i = -1; i < 2; i++) {
-			String a = pieceArray[piece.array1 + 1][piece.array2 + i].colour;
-			if (!(a.equals(piece.colour)) && !(a.equals("green"))) {
-				x = true;
+		String a;
+
+		if (piece.array1 != 0 && piece.array1 != 7 && piece.array2 != 0 && piece.array2 != 7) {
+			for (int i = -1; i < 2; i++) {
+				for (int t = -1; t < 2; t++) {
+					if (i != 0 && t != 0) {
+						a = pieceArray[piece.array1 + i][piece.array1 + t].colour;
+						// System.out.println(a + " " + pieceArray[piece.array1
+						// +
+						// i][piece.array1 + t].gridSpace);
+						// System.out.print(piece.array1 + i);
+						// System.out.println(piece.array2 + t);
+						if (!(a.equals(piece.colour)) && !(a.equals("green"))) {
+							x = true;
+							System.out.print(piece.array1 + i);
+							System.out.println(piece.array2 + t);
+							System.out.println(a);
+						}
+					}
+				}
 			}
 		}
 		return x;
