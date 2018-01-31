@@ -6,28 +6,44 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
 public class ReversiPiece extends ReversiBoard {
+	// Instance variables for each ReversiPiece
+
+	// Colour of the button/piece
 	public String colour = "g";
+
+	// X and Y coordinates of the button on the stage
 	public int buttonX;
 	public int buttonY;
+
+	// The button its self
 	public Button button;
+
+	// the array indexes of the reversiPiece array
 	public int array1;
 	public int array2;
 
-	public ReversiPiece(int gridspace) {
+	// Constructor used to set up ReversiPiece
+	public ReversiPiece(int gridspace, int i, int t) {
 		this.gridSpace = gridspace;
+		
+		//assigns the array indexes to variables for later use.
+		this.array1 = i;
+		this.array2 = t;
 	}
 
 	public void setCoords() {
-		// Initializes a pieces x and y coordinates based on the pieces grid
+		// Initializes a pieces x and y coordinates of a button based on grid
 		// space.
 		this.buttonX = 80 * ((this.gridSpace - 1) % 8);
 		this.buttonY = 80 * ((this.gridSpace - 1) / 8);
 	}
 
-	public void initializeButton(ReversiPiece piece, ReversiPiece[][] pieceArray, int arrayX, int arrayY) {
+	//Initializes the button with its onClickEvent() and its coordinates.
+	public void initializeButton(ReversiPiece piece, ReversiPiece[][] pieceArray) {
+		//creates button
 		this.button = new Button();
-		this.array1 = arrayX;
-		this.array2 = arrayY;
+		
+		//sets up the buttons coordinates and colour
 		this.setCoords();
 		this.button.setLayoutX(this.buttonX);
 		this.button.setLayoutY(this.buttonY);
@@ -35,21 +51,28 @@ public class ReversiPiece extends ReversiBoard {
 		this.button.setMinHeight(80);
 		this.setColor("g");
 
-		int x = (this.gridSpace - 1) / 8;
-		int y = (this.gridSpace - 1) % 8;
+		//Set up of onClickEvent for the button
 		this.button.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
+				//Indicates if the button should be white or black based on turnCount
 				String a;
 				if (ReversiPiece.turnCount % 2 == 0) {
 					a = "w";
 				} else {
 					a = "b";
 				}
+				//Checks if there are any available moves if not the game ends.
 				if (anyMovesAvailable(piece, pieceArray, a)) {
-					if (ReversiPiece.tileOccupied[x][y] == false && validMove(piece, pieceArray, a)) {
-						ReversiPiece.tileOccupied[x][y] = true;
+					//Checks if the indicated move is valid and if the tile is already occupied or not
+					if (ReversiPiece.tileOccupied[array1][array2] == false && validMove(piece, pieceArray, a)) {
+						//sets the tile to be occupied
+						ReversiPiece.tileOccupied[array1][array2] = true;
+						//sets the new colour
 						piece.setColor(a);
+						//prints valid to indicate that the move was valid
 						System.out.println("VALID");
+						
+						//Increases turnCount and changes turnIndicator based on it.
 						ReversiPiece.turnCount++;
 						if (ReversiPiece.turnCount % 2 == 0) {
 							ReversiBoard.turnIndicator.setText("White's Turn");
@@ -66,6 +89,7 @@ public class ReversiPiece extends ReversiBoard {
 		});
 	}
 
+	//sets the colour of the button
 	public void setColor(String a) {
 		if (a.equals("g")) {
 			this.button.setStyle("-fx-base: #228B22;");
@@ -80,9 +104,14 @@ public class ReversiPiece extends ReversiBoard {
 		}
 	}
 
+	//Checks if a move is valid or not.
+	//Parameters are the ReversiPiece instance, the ReversiPiece array, and the colour of the piece
 	public boolean validMove(ReversiPiece piece, ReversiPiece[][] pieceArray, String tileColour) {
+		//variable will become true if the move is valid
 		boolean x = false;
+		//We want to repaint the pieces so this is true.
 		boolean repaint = true;
+		//String records the colour at the given ReversiPiece
 		String a;
 		int r = piece.array1;
 		int l = piece.array2;
