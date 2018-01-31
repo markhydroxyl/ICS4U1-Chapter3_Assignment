@@ -51,8 +51,7 @@ public class ReversiPiece extends ReversiBoard {
 				if (ReversiPiece.tileOccupied[x][y] == false && validMove(piece, pieceArray, a)) {
 					ReversiPiece.tileOccupied[x][y] = true;
 					piece.setColor(a);
-					System.out.println("INVALID");
-
+					System.out.println("VALID");
 					ReversiPiece.turnCount++;
 				} else {
 					System.out.println("INVALID");
@@ -80,15 +79,109 @@ public class ReversiPiece extends ReversiBoard {
 		String a;
 		int r = piece.array1;
 		int l = piece.array2;
+		String realColour = "";
+		if (tileColour.equals("w")) {
+			realColour = "b";
+		} else {
+			realColour = "w";
+		}
 
-		if (piece.array1 != 0 && piece.array1 != 7 && piece.array2 != 0 && piece.array2 != 7) {
+		if (r != 0 && r != 7 && l != 0 && l != 7) {
 			for (int i = -1; i < 2; i++) {
 				for (int t = -1; t < 2; t++) {
 					a = pieceArray[r + i][l + t].colour;
 					if (!(a.equals(tileColour)) && !(a.equals("g"))) {
-						x = true;
-						 System.out.print(piece.array1 + i);
-						 System.out.println(piece.array2 + t);
+						if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+							x = true;
+						}
+					}
+				}
+			}
+		} else if (r == 0 && l != 0 && l != 7) {
+			for (int i = 0; i < 2; i++) {
+				for (int t = -1; t < 2; t++) {
+					a = pieceArray[r + i][l + t].colour;
+					if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+						if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+							x = true;
+						}
+					}
+				}
+			}
+		} else if (r == 0 && l == 0) {
+			for (int i = 0; i < 2; i++) {
+				for (int t = 0; t < 2; t++) {
+					a = pieceArray[r + i][l + t].colour;
+					if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+						if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+							x = true;
+						}
+					}
+				}
+			}
+		} else if (r == 0 && l == 7) {
+			for (int i = 0; i < 2; i++) {
+				for (int t = -1; t < 1; t++) {
+					a = pieceArray[r + i][l + t].colour;
+					if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+						if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+							x = true;
+						}
+					}
+				}
+			}
+		} else if (r == 7 && l == 0) {
+			for (int i = -1; i < 1; i++) {
+				for (int t = 0; t < 2; t++) {
+					a = pieceArray[r + i][l + t].colour;
+					if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+						if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+							x = true;
+						}
+					}
+				}
+			}
+		} else if (r == 7 && l == 7) {
+			for (int i = -1; i < 1; i++) {
+				for (int t = -1; t < 1; t++) {
+					a = pieceArray[r + i][l + t].colour;
+					if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+						if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+							x = true;
+						}
+					}
+				}
+			}
+		} else if (r == 7 && l != 0 && l != 7) {
+			for (int i = -1; i < 1; i++) {
+				for (int t = -1; t < 2; t++) {
+					a = pieceArray[r + i][l + t].colour;
+					if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+						if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+							x = true;
+						}
+					}
+				}
+			}
+		} else if (l == 7 && r != 0 && r != 7) {
+			for (int i = -1; i < 2; i++) {
+				for (int t = -1; t < 1; t++) {
+					a = pieceArray[r + i][l + t].colour;
+					if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+						if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+							x = true;
+						}
+					}
+				}
+			}
+		} else if (l == 0 && r != 0 && r != 7) {
+			for (int i = -1; i < 2; i++) {
+				for (int t = 0; t < 2; t++) {
+					a = pieceArray[r + i][l + t].colour;
+					if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+						if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+							x = true;
+						}
 					}
 				}
 			}
@@ -96,4 +189,412 @@ public class ReversiPiece extends ReversiBoard {
 		return x;
 	}
 
+	public boolean validTrace(int r, int l, int i, int t, ReversiPiece[][] pieceArray, String tileColour, String realColour) {
+		boolean x = false;
+		boolean breakLoop = true;
+		String a;
+		int y = i;
+		int z = t;
+		
+		if (i == 1 && t == 0) {
+			do {
+				int j = r + y;
+
+				a = pieceArray[j][l].colour;
+				if (a.equals(realColour)) {
+					System.out.println(j + "" + l);
+				} else if (a.equals(tileColour)) {
+					x = true;
+					breakLoop = false;
+					System.out.println("VALID trace");
+					repaint(r, l, i, t, pieceArray, tileColour, realColour);
+				} else {
+					breakLoop = false;
+					System.out.println("INVALID trace");
+				}
+				y++;
+
+				if (j == 7) {
+					breakLoop = false;
+				}
+			} while (breakLoop);
+		} else if (i == -1 && t == 0) {
+			do {
+				int j = r + y;
+
+				a = pieceArray[j][l].colour;
+				if (a.equals(realColour)) {
+					System.out.println(j + "" + l);
+				} else if (a.equals(tileColour)) {
+					x = true;
+					breakLoop = false;
+					System.out.println("VALID trace");
+					repaint(r, l, i, t, pieceArray, tileColour, realColour);
+				} else {
+					breakLoop = false;
+					System.out.println("INVALID trace");
+				}
+				y--;
+
+				if (j == 0) {
+					breakLoop = false;
+				}
+			} while (breakLoop);
+		} else if (i == 0 && t == 1) {
+			do {
+				int j = l + z;
+
+				a = pieceArray[r][j].colour;
+				if (a.equals(realColour)) {
+					System.out.println(r + "" + j);
+				} else if (a.equals(tileColour)) {
+					x = true;
+					breakLoop = false;
+					System.out.println("VALID trace");
+					repaint(r, l, i, t, pieceArray, tileColour, realColour);
+				} else {
+					breakLoop = false;
+					System.out.println("INVALID trace");
+				}
+				z++;
+
+				if (j == 7) {
+					breakLoop = false;
+				}
+			} while (breakLoop);
+		} else if (i == 0 && t == -1) {
+			do {
+				int j = l + z;
+
+				a = pieceArray[r][j].colour;
+				if (a.equals(realColour)) {
+					System.out.println(r + "" + j);
+				} else if (a.equals(tileColour)) {
+					x = true;
+					breakLoop = false;
+					System.out.println("VALID trace");
+					repaint(r, l, i, t, pieceArray, tileColour, realColour);
+				} else {
+					breakLoop = false;
+					System.out.println("INVALID trace");
+				}
+				z--;
+
+				if (j == 0) {
+					breakLoop = false;
+				}
+			} while (breakLoop);
+		} else if (i == -1 && t == -1) {
+			do {
+				int j = r + y;
+				int s = l + z;
+
+				a = pieceArray[j][s].colour;
+				if (a.equals(realColour)) {
+					System.out.println(j + "" + s);
+				} else if (a.equals(tileColour)) {
+					x = true;
+					breakLoop = false;
+					System.out.println("VALID trace");
+					repaint(r, l, i, t, pieceArray, tileColour, realColour);
+				} else {
+					breakLoop = false;
+					System.out.println("INVALID trace");
+				}
+				y--;
+				z--;
+				if (j == 0 || s == 0) {
+					breakLoop = false;
+				}
+			} while (breakLoop);
+		} else if (i == 1 && t == 1) {
+			do {
+				int j = r + y;
+				int s = l + z;
+				a = pieceArray[j][s].colour;
+				if (a.equals(realColour)) {
+					System.out.println(j + "" + s);
+				} else if (a.equals(tileColour)) {
+					x = true;
+					breakLoop = false;
+					System.out.println("VALID trace");
+					repaint(r, l, i, t, pieceArray, tileColour, realColour);
+				} else {
+					breakLoop = false;
+					System.out.println("INVALID trace");
+				}
+				y++;
+				z++;
+
+				if (j == 7 || s == 7) {
+					breakLoop = false;
+				}
+			} while (breakLoop);
+		} else if (i == -1 && t == 1) {
+			do {
+				int j = r + y;
+				int s = l + z;
+				a = pieceArray[j][s].colour;
+				if (a.equals(realColour)) {
+					System.out.println(j + "" + s);
+				} else if (a.equals(tileColour)) {
+					x = true;
+					breakLoop = false;
+					System.out.println("VALID trace");
+					repaint(r, l, i, t, pieceArray, tileColour, realColour);
+				} else {
+					breakLoop = false;
+					System.out.println("INVALID trace");
+				}
+				y--;
+				z++;
+				if (j == 0 || s == 7) {
+					breakLoop = false;
+				}
+			} while (breakLoop);
+		} else if (i == 1 && t == -1) {
+			do {
+				int j = r + y;
+				int s = l + z;
+				a = pieceArray[j][s].colour;
+				if (a.equals(realColour)) {
+					System.out.println(j + "" + s);
+				} else if (a.equals(tileColour)) {
+					x = true;
+					breakLoop = false;
+					System.out.println("VALID trace");
+					repaint(r, l, i, t, pieceArray, tileColour, realColour);
+				} else {
+					breakLoop = false;
+					System.out.println("INVALID trace");
+				}
+				y++;
+				z--;
+				if (j == 7 || s == 0) {
+					breakLoop = false;
+				}
+			} while (breakLoop);
+		}
+		return x;
+	}
+
+	public void repaint(int r, int l, int i, int t, ReversiPiece[][] pieceArray, String tileColour, String realColour) {
+		boolean breakLoop = true;
+		String a;
+		int y = i;
+		int z = t;
+		if (i == 1 && t == 0) {
+			do {
+				int j = r + y;
+				a = pieceArray[j][l].colour;
+				if (a.equals(realColour)) {
+					pieceArray[j][l].setColor(tileColour);
+				} else {
+					breakLoop = false;
+				}
+				y++;
+			} while (breakLoop);
+		} else if (i == -1 && t == 0) {
+			do {
+				int j = r + y;
+				a = pieceArray[j][l].colour;
+				if (a.equals(realColour)) {
+					pieceArray[j][l].setColor(tileColour);
+				} else {
+					breakLoop = false;
+				}
+				y--;
+			} while (breakLoop);
+		} else if (i == 0 && t == 1) {
+			do {
+				int j = l + z;
+
+				a = pieceArray[r][j].colour;
+				if (a.equals(realColour)) {
+					pieceArray[r][j].setColor(tileColour);
+				} else {
+					breakLoop = false;
+				}
+				z++;
+			} while (breakLoop);
+		} else if (i == 0 && t == -1) {
+			do {
+				int j = l + z;
+
+				a = pieceArray[r][j].colour;
+				if (a.equals(realColour)) {
+					pieceArray[r][j].setColor(tileColour);
+				} else {
+					breakLoop = false;
+				}
+				z--;
+
+			} while (breakLoop);
+		} else if (i == -1 && t == -1) {
+			do {
+				int j = r + y;
+				int s = l + z;
+
+				a = pieceArray[j][s].colour;
+				if (a.equals(realColour)) {
+					pieceArray[j][s].setColor(tileColour);
+				} else {
+					breakLoop = false;
+				}
+				y--;
+				z--;
+			} while (breakLoop);
+		} else if (i == 1 && t == 1) {
+			do {
+				int j = r + y;
+				int s = l + z;
+				a = pieceArray[j][s].colour;
+				if (a.equals(realColour)) {
+					pieceArray[j][s].setColor(tileColour);
+				} else {
+					breakLoop = false;
+				}
+				y++;
+				z++;
+			} while (breakLoop);
+		} else if (i == -1 && t == 1) {
+			do {
+				int j = r + y;
+				int s = l + z;
+				a = pieceArray[j][s].colour;
+				if (a.equals(realColour)) {
+					pieceArray[j][s].setColor(tileColour);
+				} else {
+					breakLoop = false;
+				}
+				y--;
+				z++;
+			} while (breakLoop);
+		} else if (i == 1 && t == -1) {
+			do {
+				int j = r + y;
+				int s = l + z;
+				a = pieceArray[j][s].colour;
+				if (a.equals(realColour)) {
+					pieceArray[j][s].setColor(tileColour);
+				} else {
+					breakLoop = false;
+				}
+				y++;
+				z--;
+			} while (breakLoop);
+		}
+	}
+
+	public boolean anyMovesAvailable(ReversiPiece piece, ReversiPiece[][] pieceArray, String tileColour, String realColour) {
+		boolean x = true;
+		String a;
+		int r = piece.array1;
+		int l = piece.array2;
+		for (int s = 0; s < 8; s++) {
+			for (int z = 0; z < 8; z++) {
+				if (r != 0 && r != 7 && l != 0 && l != 7) {
+					for (int i = -1; i < 2; i++) {
+						for (int t = -1; t < 2; t++) {
+							a = pieceArray[s][z].colour;
+							if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+								if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+									x = true;
+								}
+							}
+						}
+					}
+				} else if (r == 0 && l != 0 && l != 7) {
+					for (int i = 0; i < 2; i++) {
+						for (int t = -1; t < 2; t++) {
+							a = pieceArray[s][z].colour;
+							if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+								if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+									x = true;
+								}
+							}
+						}
+					}
+				} else if (r == 0 && l == 0) {
+					for (int i = 0; i < 2; i++) {
+						for (int t = 0; t < 2; t++) {
+							a = pieceArray[s][z].colour;
+							if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+								if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+									x = true;
+								}
+							}
+						}
+					}
+				} else if (r == 0 && l == 7) {
+					for (int i = 0; i < 2; i++) {
+						for (int t = -1; t < 1; t++) {
+							a = pieceArray[s][z].colour;
+							if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+								if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+									x = true;
+								}
+							}
+						}
+					}
+				} else if (r == 7 && l == 0) {
+					for (int i = -1; i < 1; i++) {
+						for (int t = 0; t < 2; t++) {
+							a = pieceArray[s][z].colour;
+							if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+								if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+									x = true;
+								}
+							}
+						}
+					}
+				} else if (r == 7 && l == 7) {
+					for (int i = -1; i < 1; i++) {
+						for (int t = -1; t < 1; t++) {
+							a = pieceArray[s][z].colour;
+							if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+								if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+									x = true;
+								}
+							}
+						}
+					}
+				} else if (r == 7 && l != 0 && l != 7) {
+					for (int i = -1; i < 1; i++) {
+						for (int t = -1; t < 2; t++) {
+							a = pieceArray[s][z].colour;
+							if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+								if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+									x = true;
+								}
+							}
+						}
+					}
+				} else if (l == 7 && r != 0 && r != 7) {
+					for (int i = -1; i < 2; i++) {
+						for (int t = -1; t < 1; t++) {
+							a = pieceArray[s][z].colour;
+							if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+								if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+									x = true;
+								}
+							}
+						}
+					}
+				} else if (l == 0 && r != 0 && r != 7) {
+					for (int i = -1; i < 2; i++) {
+						for (int t = 0; t < 2; t++) {
+							a = pieceArray[s][z].colour;
+							if (!(a.equals(tileColour)) && !(a.equals("g"))) {
+								if (validTrace(r, l, i, t, pieceArray, tileColour, realColour)) {
+									x = true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return x;
+	}
 }
