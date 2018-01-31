@@ -34,12 +34,13 @@ public class Main extends Application {
 			startGame.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
 					ReversiBoard start = new ReversiBoard();
-					start.drawBoard();
 					primaryStage.close();
+					start.drawBoard();
+
 					reversiBoardSetUp();
 					for (int i = 0; i < 8; i++) {
 						for (int t = 0; t < 8; t++) {
-							start.root2.getChildren().add(reversiObjects[i][t].button);
+							ReversiBoard.root2.getChildren().add(reversiObjects[i][t].button);
 						}
 					}
 				}

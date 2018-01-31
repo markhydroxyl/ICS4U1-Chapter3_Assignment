@@ -3,25 +3,30 @@ package application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ReversiBoard extends ReversiGrid {
 	final public int BoardSizeX = 640;
-	final public int BoardSizeY = 640;
+	final public int BoardSizeY = 680;
 	public Stage reversiStage;
-	public Pane root2;
+	public static Pane root2;
 	public Scene board;
+	public static Text turnIndicator;
 
 	public void drawBoard() {
 		reversiStage = new Stage();
 		root2 = new Pane();
 		board = new Scene(root2, BoardSizeX, BoardSizeY);
 		board.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-
+		turnIndicator = new Text(280, 660, "White's Turn");
+		root2.getChildren().add(turnIndicator);
+		
 		reversiStage.setScene(board);
 		reversiStage.setResizable(false);
 		reversiStage.sizeToScene();
-		reversiStage.show();
+		reversiStage.show();		
 	}
 	// public void drawButtons(){
 	// Button o = new Button();//place holder
