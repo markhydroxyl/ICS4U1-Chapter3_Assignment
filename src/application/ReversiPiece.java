@@ -523,7 +523,7 @@ public class ReversiPiece extends ReversiBoard {
 
 		for (int s = 0; s < 8; s++) {
 			for (int z = 0; z < 8; z++) {
-				if (ReversiGrid.tileOccupied[s][z] == false) {
+				if (ReversiBoard.tileOccupied[s][z] == false) {
 					if (s != 0 && s != 7 && z != 0 && z != 7) {
 						for (int i = -1; i < 2; i++) {
 							for (int t = -1; t < 2; t++) {
