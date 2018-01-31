@@ -450,6 +450,7 @@ public class ReversiPiece extends ReversiBoard {
 				a = pieceArray[j][l].color;
 				if (a.equals(realColor)) {
 					pieceArray[j][l].setColor(tileColor);
+					// Changes the color of the off colored pieces
 				} else {
 					breakLoop = false;
 				}
@@ -547,7 +548,11 @@ public class ReversiPiece extends ReversiBoard {
 		}
 	}
 
+	// Checks every piece on the board to see if any moves are available
 	public boolean anyMovesAvailable(ReversiPiece piece, ReversiPiece[][] pieceArray, String tileColor) {
+		// Exactly the same as the valid move code, however repaint is false
+		// therefore nothing changes color, it just makes sure there are no
+		// moves available
 		String realColor;
 		if (tileColor.equals("w")) {
 			realColor = "b";
@@ -556,8 +561,11 @@ public class ReversiPiece extends ReversiBoard {
 		}
 		boolean x = false;
 		String a;
+		// repaint is false since I don't want the pieces to change color
 		boolean repaint = false;
 
+		// for loop cycles through the whole board as I want to check every
+		// piece
 		for (int s = 0; s < 8; s++) {
 			for (int z = 0; z < 8; z++) {
 				if (ReversiBoard.tileOccupied[s][z] == false) {
@@ -671,6 +679,8 @@ public class ReversiPiece extends ReversiBoard {
 	public void countScore(ReversiPiece[][] pieceArray) {
 		int numWhite = 0;
 		int numBlack = 0;
+		// Checks the if a piece is black or white and increments based on the
+		// color
 		for (int s = 0; s < 8; s++) {
 			for (int z = 0; z < 8; z++) {
 				if (pieceArray[s][z].color.equals("w")) {
@@ -680,6 +690,7 @@ public class ReversiPiece extends ReversiBoard {
 				}
 			}
 		}
+		//Prints the winner
 		if (numWhite > numBlack) {
 			ReversiBoard.turnIndicator.setText("White Wins " + numWhite + ":" + numBlack);
 		} else {
