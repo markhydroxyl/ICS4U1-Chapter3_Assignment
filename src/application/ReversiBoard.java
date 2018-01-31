@@ -24,6 +24,7 @@ public class ReversiBoard extends ReversiGrid {
 		root2.getChildren().add(turnIndicator);
 		
 		reversiStage.setScene(board);
+		reversiStage.setTitle("Reversi");
 		reversiStage.setResizable(false);
 		reversiStage.sizeToScene();
 		reversiStage.show();		

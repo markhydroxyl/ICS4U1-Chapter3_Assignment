@@ -34,7 +34,7 @@ public class ReversiPiece extends ReversiBoard {
 		this.button.setMinWidth(80);
 		this.button.setMinHeight(80);
 		this.setColor("g");
-		
+
 		int x = (this.gridSpace - 1) / 8;
 		int y = (this.gridSpace - 1) % 8;
 		this.button.setOnAction(new EventHandler<ActionEvent>() {
@@ -210,17 +210,17 @@ public class ReversiPiece extends ReversiBoard {
 
 				a = pieceArray[j][l].colour;
 				if (a.equals(realColour)) {
-					System.out.println(j + "" + l);
+					// System.out.println(j + "" + l);
 				} else if (a.equals(tileColour)) {
 					x = true;
 					breakLoop = false;
-					System.out.println("VALID trace");
+					// System.out.println("VALID trace");
 					if (repaint) {
 						repaint(r, l, i, t, pieceArray, tileColour, realColour);
 					}
 				} else {
 					breakLoop = false;
-					System.out.println("INVALID trace");
+					// System.out.println("INVALID trace");
 				}
 				y++;
 
@@ -234,17 +234,17 @@ public class ReversiPiece extends ReversiBoard {
 
 				a = pieceArray[j][l].colour;
 				if (a.equals(realColour)) {
-					System.out.println(j + "" + l);
+					// System.out.println(j + "" + l);
 				} else if (a.equals(tileColour)) {
 					x = true;
 					breakLoop = false;
-					System.out.println("VALID trace");
+					// System.out.println("VALID trace");
 					if (repaint) {
 						repaint(r, l, i, t, pieceArray, tileColour, realColour);
 					}
 				} else {
 					breakLoop = false;
-					System.out.println("INVALID trace");
+					// System.out.println("INVALID trace");
 				}
 				y--;
 
@@ -258,17 +258,17 @@ public class ReversiPiece extends ReversiBoard {
 
 				a = pieceArray[r][j].colour;
 				if (a.equals(realColour)) {
-					System.out.println(r + "" + j);
+					// System.out.println(r + "" + j);
 				} else if (a.equals(tileColour)) {
 					x = true;
 					breakLoop = false;
-					System.out.println("VALID trace");
+					// System.out.println("VALID trace");
 					if (repaint) {
 						repaint(r, l, i, t, pieceArray, tileColour, realColour);
 					}
 				} else {
 					breakLoop = false;
-					System.out.println("INVALID trace");
+					// System.out.println("INVALID trace");
 				}
 				z++;
 
@@ -282,17 +282,17 @@ public class ReversiPiece extends ReversiBoard {
 
 				a = pieceArray[r][j].colour;
 				if (a.equals(realColour)) {
-					System.out.println(r + "" + j);
+					// System.out.println(r + "" + j);
 				} else if (a.equals(tileColour)) {
 					x = true;
 					breakLoop = false;
-					System.out.println("VALID trace");
+					// System.out.println("VALID trace");
 					if (repaint) {
 						repaint(r, l, i, t, pieceArray, tileColour, realColour);
 					}
 				} else {
 					breakLoop = false;
-					System.out.println("INVALID trace");
+					// System.out.println("INVALID trace");
 				}
 				z--;
 
@@ -307,17 +307,17 @@ public class ReversiPiece extends ReversiBoard {
 
 				a = pieceArray[j][s].colour;
 				if (a.equals(realColour)) {
-					System.out.println(j + "" + s);
+					// System.out.println(j + "" + s);
 				} else if (a.equals(tileColour)) {
 					x = true;
 					breakLoop = false;
-					System.out.println("VALID trace");
+					// System.out.println("VALID trace");
 					if (repaint) {
 						repaint(r, l, i, t, pieceArray, tileColour, realColour);
 					}
 				} else {
 					breakLoop = false;
-					System.out.println("INVALID trace");
+					// System.out.println("INVALID trace");
 				}
 				y--;
 				z--;
@@ -331,17 +331,17 @@ public class ReversiPiece extends ReversiBoard {
 				int s = l + z;
 				a = pieceArray[j][s].colour;
 				if (a.equals(realColour)) {
-					System.out.println(j + "" + s);
+					// System.out.println(j + "" + s);
 				} else if (a.equals(tileColour)) {
 					x = true;
 					breakLoop = false;
-					System.out.println("VALID trace");
+					// System.out.println("VALID trace");
 					if (repaint) {
 						repaint(r, l, i, t, pieceArray, tileColour, realColour);
 					}
 				} else {
 					breakLoop = false;
-					System.out.println("INVALID trace");
+					// System.out.println("INVALID trace");
 				}
 				y++;
 				z++;
@@ -356,17 +356,17 @@ public class ReversiPiece extends ReversiBoard {
 				int s = l + z;
 				a = pieceArray[j][s].colour;
 				if (a.equals(realColour)) {
-					System.out.println(j + "" + s);
+					// System.out.println(j + "" + s);
 				} else if (a.equals(tileColour)) {
 					x = true;
 					breakLoop = false;
-					System.out.println("VALID trace");
+					// System.out.println("VALID trace");
 					if (repaint) {
 						repaint(r, l, i, t, pieceArray, tileColour, realColour);
 					}
 				} else {
 					breakLoop = false;
-					System.out.println("INVALID trace");
+					// System.out.println("INVALID trace");
 				}
 				y--;
 				z++;
@@ -380,17 +380,17 @@ public class ReversiPiece extends ReversiBoard {
 				int s = l + z;
 				a = pieceArray[j][s].colour;
 				if (a.equals(realColour)) {
-					System.out.println(j + "" + s);
+					// System.out.println(j + "" + s);
 				} else if (a.equals(tileColour)) {
 					x = true;
 					breakLoop = false;
-					System.out.println("VALID trace");
+					// System.out.println("VALID trace");
 					if (repaint) {
 						repaint(r, l, i, t, pieceArray, tileColour, realColour);
 					}
 				} else {
 					breakLoop = false;
-					System.out.println("INVALID trace");
+					// System.out.println("INVALID trace");
 				}
 				y++;
 				z--;
@@ -642,9 +642,9 @@ public class ReversiPiece extends ReversiBoard {
 				}
 			}
 		}
-		if (numWhite>numBlack){
+		if (numWhite > numBlack) {
 			ReversiBoard.turnIndicator.setText("White Wins " + numWhite + ":" + numBlack);
-		} else{
+		} else {
 			ReversiBoard.turnIndicator.setText("Black Wins " + numBlack + ":" + numWhite);
 		}
 	}
