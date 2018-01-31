@@ -44,7 +44,7 @@ public class Main extends Application {
 					ReversiBoard start = new ReversiBoard();
 					primaryStage.close();
 					// draws the board
-					start.drawBoard();
+					start.newGame();
 
 					// sets up the buttons
 					reversiBoardSetUp();

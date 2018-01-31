@@ -20,19 +20,25 @@ public class ReversiBoard extends ReversiGrid {
 	// Turn indicator for on the board
 	public static Text turnIndicator;
 
+	public byte getState() {
+		byte x = 0;
+		
+		return x;
+	}
+
 	// Draw board method sets up the reversi stage
-	public void drawBoard() {
-		//stage, pane, and scene setup
+	public void newGame() {
+		// stage, pane, and scene setup
 		reversiStage = new Stage();
 		root2 = new Pane();
 		board = new Scene(root2, BoardSizeX, BoardSizeY);
 		board.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		
-		//sets up the turn indicator
+
+		// sets up the turn indicator
 		turnIndicator = new Text(280, 660, "White's Turn");
 		root2.getChildren().add(turnIndicator);
 
-		//Initializes the new stage
+		// Initializes the new stage
 		reversiStage.setScene(board);
 		reversiStage.setTitle("Reversi");
 		reversiStage.setResizable(false);

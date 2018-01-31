@@ -20,8 +20,11 @@ public abstract class ReversiGrid {
 	//Holds a turn count for the game. Used to determine whose turn it is
 	public static int turnCount = 0;
 	
+	public abstract byte getState();
+
+	
 	//abstract method to draw the board
-	public abstract void drawBoard();
+	public abstract void newGame();
 
 
 }
