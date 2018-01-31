@@ -31,7 +31,7 @@ public class ReversiPiece extends ReversiBoard {
 		this.setCoords();
 		this.button.setLayoutX(this.buttonX);
 		this.button.setLayoutY(this.buttonY);
-		this.button.setText(String.valueOf(array1 + "" + array2));
+//		this.button.setText(String.valueOf(array1 + "" + array2));
 		this.button.setMinWidth(80);
 		this.button.setMinHeight(80);
 		this.setColor("g");
@@ -47,7 +47,7 @@ public class ReversiPiece extends ReversiBoard {
 				} else {
 					a = "b";
 				}
-//				if (anyMovesAvailable(piece, pieceArray, a)) {
+				if (anyMovesAvailable(piece, pieceArray, a)) {
 					if (ReversiPiece.tileOccupied[x][y] == false && validMove(piece, pieceArray, a)) {
 						ReversiPiece.tileOccupied[x][y] = true;
 						piece.setColor(a);
@@ -61,9 +61,9 @@ public class ReversiPiece extends ReversiBoard {
 					} else {
 						System.out.println("INVALID");
 					}
-//				} else {
-//					countScore(pieceArray);
-//				}
+				} else {
+					countScore(pieceArray);
+				}
 			}
 		});
 	}
@@ -513,7 +513,7 @@ public class ReversiPiece extends ReversiBoard {
 	}
 
 	public boolean anyMovesAvailable(ReversiPiece piece, ReversiPiece[][] pieceArray, String tileColour) {
-		String realColour = "";
+		String realColour;
 		if (tileColour.equals("w")) {
 			realColour = "b";
 		} else {
@@ -529,7 +529,7 @@ public class ReversiPiece extends ReversiBoard {
 					if (s != 0 && s != 7 && z != 0 && z != 7) {
 						for (int i = -1; i < 2; i++) {
 							for (int t = -1; t < 2; t++) {
-								a = pieceArray[s][z].colour;
+								a = pieceArray[s + i][z + t].colour;
 								if (!(a.equals(tileColour)) && !(a.equals("g"))) {
 									if (validTrace(s, z, i, t, pieceArray, tileColour, realColour, repaint)) {
 										x = true;
@@ -540,7 +540,7 @@ public class ReversiPiece extends ReversiBoard {
 					} else if (s == 0 && z != 0 && z != 7) {
 						for (int i = 0; i < 2; i++) {
 							for (int t = -1; t < 2; t++) {
-								a = pieceArray[s][z].colour;
+								a = pieceArray[s + i][z + t].colour;
 								if (!(a.equals(tileColour)) && !(a.equals("g"))) {
 									if (validTrace(s, z, i, t, pieceArray, tileColour, realColour, repaint)) {
 										x = true;
@@ -551,7 +551,7 @@ public class ReversiPiece extends ReversiBoard {
 					} else if (s == 0 && z == 0) {
 						for (int i = 0; i < 2; i++) {
 							for (int t = 0; t < 2; t++) {
-								a = pieceArray[s][z].colour;
+								a = pieceArray[s + i][z + t].colour;
 								if (!(a.equals(tileColour)) && !(a.equals("g"))) {
 									if (validTrace(s, z, i, t, pieceArray, tileColour, realColour, repaint)) {
 										x = true;
@@ -562,7 +562,7 @@ public class ReversiPiece extends ReversiBoard {
 					} else if (s == 0 && z == 7) {
 						for (int i = 0; i < 2; i++) {
 							for (int t = -1; t < 1; t++) {
-								a = pieceArray[s][z].colour;
+								a = pieceArray[s + i][z + t].colour;
 								if (!(a.equals(tileColour)) && !(a.equals("g"))) {
 									if (validTrace(s, z, i, t, pieceArray, tileColour, realColour, repaint)) {
 										x = true;
@@ -573,7 +573,7 @@ public class ReversiPiece extends ReversiBoard {
 					} else if (s == 7 && z == 0) {
 						for (int i = -1; i < 1; i++) {
 							for (int t = 0; t < 2; t++) {
-								a = pieceArray[s][z].colour;
+								a = pieceArray[s + i][z + t].colour;
 								if (!(a.equals(tileColour)) && !(a.equals("g"))) {
 									if (validTrace(s, z, i, t, pieceArray, tileColour, realColour, repaint)) {
 										x = true;
@@ -584,7 +584,7 @@ public class ReversiPiece extends ReversiBoard {
 					} else if (s == 7 && z == 7) {
 						for (int i = -1; i < 1; i++) {
 							for (int t = -1; t < 1; t++) {
-								a = pieceArray[s][z].colour;
+								a = pieceArray[s + i][z + t].colour;
 								if (!(a.equals(tileColour)) && !(a.equals("g"))) {
 									if (validTrace(s, z, i, t, pieceArray, tileColour, realColour, repaint)) {
 										x = true;
@@ -595,7 +595,7 @@ public class ReversiPiece extends ReversiBoard {
 					} else if (s == 7 && z != 0 && z != 7) {
 						for (int i = -1; i < 1; i++) {
 							for (int t = -1; t < 2; t++) {
-								a = pieceArray[s][z].colour;
+								a = pieceArray[s + i][z + t].colour;
 								if (!(a.equals(tileColour)) && !(a.equals("g"))) {
 									if (validTrace(s, z, i, t, pieceArray, tileColour, realColour, repaint)) {
 										x = true;
@@ -606,7 +606,7 @@ public class ReversiPiece extends ReversiBoard {
 					} else if (z == 7 && s != 0 && s != 7) {
 						for (int i = -1; i < 2; i++) {
 							for (int t = -1; t < 1; t++) {
-								a = pieceArray[s][z].colour;
+								a = pieceArray[s + i][z + t].colour;
 								if (!(a.equals(tileColour)) && !(a.equals("g"))) {
 									if (validTrace(s, z, i, t, pieceArray, tileColour, realColour, repaint)) {
 										x = true;
@@ -617,7 +617,7 @@ public class ReversiPiece extends ReversiBoard {
 					} else if (z == 0 && s != 0 && s != 7) {
 						for (int i = -1; i < 2; i++) {
 							for (int t = 0; t < 2; t++) {
-								a = pieceArray[s][z].colour;
+								a = pieceArray[s + i][z + t].colour;
 								if (!(a.equals(tileColour)) && !(a.equals("g"))) {
 									if (validTrace(s, z, i, t, pieceArray, tileColour, realColour, repaint)) {
 										x = true;
@@ -644,6 +644,10 @@ public class ReversiPiece extends ReversiBoard {
 				}
 			}
 		}
-		System.out.println(numWhite + " " + numBlack);
+		if (numWhite>numBlack){
+			ReversiBoard.turnIndicator.setText("White Wins " + numWhite + ":" + numBlack);
+		} else{
+			ReversiBoard.turnIndicator.setText("Black Wins " + numBlack + ":" + numWhite);
+		}
 	}
 }
