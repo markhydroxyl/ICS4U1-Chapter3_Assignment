@@ -1,25 +1,20 @@
 package application;
 
+import javafx.event.ActionEvent;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import minesweeper.MinesweeperGame;
 import util.BoardPosition;
 import util.Difficulty;
 import util.Game;
 import util.MinesweeperConstants;
-import javafx.scene.Scene;
-//import javafx.scene.canvas.Canvas;
-//import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-//import javafx.scene.input.KeyEvent;
-//import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-//import javafx.scene.paint.Color;
-
-//import java.util.Scanner;
 
 
 public class Main extends Application {
@@ -29,6 +24,11 @@ public class Main extends Application {
 	boolean minesweeper = false;
 	boolean reversi = false;
 	Game curGame;
+	
+	//The array of reversi pieces
+	public ReversiPiece[][] reversiObjects = new ReversiPiece[8][8];
+	//int used for setup of the individual instances of the array above
+	public int setup = 1;
 	
 	EventHandler<MouseEvent> mouseClickEvent = new EventHandler<MouseEvent>() {
 		@Override
@@ -74,14 +74,59 @@ public class Main extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-		minesweeper = true;
+		//Minesweeper button
+		Button minesweeperStart = new Button("MS");
+		minesweeperStart.setLayoutX(10);
+		minesweeperStart.setLayoutY(50);
+		
+		//Reversi button
+		Button reversiStart = new Button("R/O");
+		reversiStart.setLayoutX(60);
+		reversiStart.setLayoutY(50);
+		
+		root.getChildren().add(minesweeperStart);
+		root.getChildren().add(reversiStart);
+		
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		if (minesweeper) {
-			startMinesweeper(primaryStage);
-		} else if (reversi) {}
+		
+		minesweeperStart.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e) {
+				minesweeper = true;
+				reversi = false;
+				startMinesweeper(primaryStage);
+			}
+		});
+		reversiStart.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e) {
+				minesweeper = false;
+				reversi = true;
+					// Beginning of game this button starts the game and draws
+					// the new board
+
+					// creates a ReversiBoard object
+					ReversiBoard start = new ReversiBoard();
+					primaryStage.close();
+					// draws the board
+					start.newGame();
+
+					// sets up the buttons
+					reversiBoardSetUp();
+					// adds the buttons to the stage
+					for (int i = 0; i < 8; i++) {
+						for (int t = 0; t < 8; t++) {
+							ReversiBoard.root2.getChildren().add(reversiObjects[i][t].button);
+						}
+					}
+				}
+			
+		});
 	}
+	
+	
 	
 	private void startMinesweeper(Stage primaryStage) {
 		curGame = new MinesweeperGame();
@@ -108,6 +153,33 @@ public class Main extends Application {
 //			}
 		}.start();
 	}
+	
+	public void reversiBoardSetUp() {
+		// Loop sets up the buttons and initializes them with the
+		// initializeButton method
+		for (int i = 0; i < 8; i++) {
+			// setup is a counter used to set up the gridspace value
+			for (int t = 0; t < 8; t++, setup++) {
+				reversiObjects[i][t] = new ReversiPiece(setup, i, t);
+				// Inputs the individual instance as well as the array of
+				// instances, and the counters for the specific instance in the
+				// array
+				reversiObjects[i][t].initializeButton(reversiObjects[i][t], reversiObjects);
+
+			}
+
+		}
+		// sets up 4 starting tiles
+		reversiObjects[3][3].setColor("w");
+		ReversiPiece.tileOccupied[3][3] = true;
+		reversiObjects[4][4].setColor("w");
+		ReversiPiece.tileOccupied[4][4] = true;
+		reversiObjects[3][4].setColor("b");
+		ReversiPiece.tileOccupied[3][4] = true;
+		reversiObjects[4][3].setColor("b");
+		ReversiPiece.tileOccupied[4][3] = true;
+	}
+
 
 	public static void main(String[] args) {
 		launch(args);
