@@ -138,19 +138,23 @@ public class Main extends Application {
 		new AnimationTimer() {
 			@Override
 			public void handle(long time) {
+				((MinesweeperGame) curGame).gameBoard.render(root);
 				((MinesweeperGame) curGame).gameBoard.timeIncrease();
 				if (curGame.getState() == 1) {
 					System.out.println("You won!");
+					((MinesweeperGame) curGame).gameBoard.displayOver(root, true);
+					minesweeper = false;
 					stop();
 					//TODO: Add return to home screen code here
 				} else if (curGame.getState() == -1) {
 					System.out.println("You lost...");
+					((MinesweeperGame) curGame).gameBoard.displayOver(root, false);
+					minesweeper = false;
 					stop();
 					//TODO: Add return to home screen code here
 				}
 				
 //				root.getChildren().remove(root.getChildren().size()-1);
-				((MinesweeperGame) curGame).gameBoard.render(root);
 			}
 		}.start();
 	}

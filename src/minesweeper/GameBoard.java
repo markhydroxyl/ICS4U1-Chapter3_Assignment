@@ -48,6 +48,10 @@ public class GameBoard {
 		this.display.display(tileArray, aRoot);
 	}
 	
+	public void displayOver(Pane aRoot, boolean aWin) {
+		this.display.onGameOver(aRoot, aWin);
+	}
+	
 	public void timeIncrease() {
 		time.incrementTime();
 	}

@@ -3,6 +3,7 @@ package minesweeper.gameInteraction;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import minesweeper.tiles.*;
 import util.MinesweeperConstants;
 
@@ -30,6 +31,21 @@ public class Display {
 		
 		//Print game to console for reference
 //		printToConsole(aArray);
+	}
+	
+	public void onGameOver(Pane aRoot, boolean win) {
+		Canvas gameOverText = new Canvas(50, 50);
+		gameOverText.setTranslateX(20);
+		gameOverText.setTranslateY(20);
+		GraphicsContext textGC = gameOverText.getGraphicsContext2D();
+		textGC.setStroke(Color.BLACK);
+		textGC.setLineWidth(0.5);
+		if(win) {
+			textGC.strokeText("You win!", 0, 10);
+		} else {
+			textGC.strokeText("You lost", 0, 10);
+		}
+		aRoot.getChildren().add(gameOverText);
 	}
 	
 	private void drawLines(Pane aRoot, int numRows, int numCols) {
