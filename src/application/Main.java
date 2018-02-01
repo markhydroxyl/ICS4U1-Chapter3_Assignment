@@ -1,42 +1,109 @@
 package application;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.animation.AnimationTimer;
+import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.stage.Stage;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import minesweeper.MinesweeperGame;
+import util.BoardPosition;
+import util.Difficulty;
+import util.Game;
+import util.MinesweeperConstants;
+
 
 public class Main extends Application {
+	Pane root = new Pane();
+	Scene scene = new Scene(root, 500, 500);
+	Difficulty gameMode = Difficulty.EASY;
+	boolean minesweeper = false;
+	boolean reversi = false;
+	Game curGame;
+	
 	//The array of reversi pieces
 	public ReversiPiece[][] reversiObjects = new ReversiPiece[8][8];
 	//int used for setup of the individual instances of the array above
 	public int setup = 1;
-
+	
+	EventHandler<MouseEvent> mouseClickEvent = new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent event) {
+			if (minesweeper) {
+				double clickX = event.getScreenX()-MinesweeperConstants.X_OFFSET - (scene.getWindow().getX()+scene.getX());
+				double clickY = event.getScreenY()-MinesweeperConstants.Y_OFFSET - (scene.getWindow().getY()+scene.getY());
+				System.out.println("Clicked at: ("+clickX+", "+clickY+")");
+				boolean inBounds = false;
+				
+				if((clickX>0 && clickY>0)&&((gameMode.equals(Difficulty.EASY) && 
+								clickX < MinesweeperConstants.EASY_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
+								clickY < MinesweeperConstants.EASY_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET)||
+						(gameMode.equals(Difficulty.MEDIUM) && 
+									clickX < MinesweeperConstants.MED_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
+								clickY < MinesweeperConstants.MED_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET)||
+						(gameMode.equals(Difficulty.HARD) && 
+								clickX < MinesweeperConstants.HARD_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
+								clickY < MinesweeperConstants.HARD_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET)||
+						(gameMode.equals(Difficulty.LUNATIC) && 
+								clickX < MinesweeperConstants.LUNA_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
+								clickY < MinesweeperConstants.LUNA_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET))) {
+					inBounds = true;
+				}
+				
+				if (inBounds) {
+					int x = (int)(clickX)/MinesweeperConstants.TILE_WIDTH;
+					int y = (int)(clickY)/MinesweeperConstants.TILE_HEIGHT;
+					if (event.getButton().equals(MouseButton.PRIMARY)) {
+						((MinesweeperGame) curGame).gameBoard.onReveal(new BoardPosition(x, y));
+						System.out.print("Dug ");
+					} else if (event.getButton().equals(MouseButton.SECONDARY)) {
+						((MinesweeperGame) curGame).gameBoard.onFlag(new BoardPosition(x, y));
+						System.out.print("Flagged ");
+					}
+					System.out.println(" on: ("+x+", "+y+")");
+				}
+			}
+			
+			event.consume();
+		}
+	};
+	
 	@Override
 	public void start(Stage primaryStage) {
-		try {
-			// Set up code for the start screen
-			Pane root = new Pane();
-			Scene scene = new Scene(root, 400, 400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.show();
-			Button startGame = new Button();
-			startGame.setLayoutX(50);
-			startGame.setLayoutY(50);
-			root.getChildren().add(startGame);
-			startGame.setText("START");
-			// End of setup code
-			startGame.setOnAction(new EventHandler<ActionEvent>() {
-				public void handle(ActionEvent event) {
+		//Minesweeper button
+		Button minesweeperStart = new Button("MS");
+		minesweeperStart.setLayoutX(10);
+		minesweeperStart.setLayoutY(50);
+		
+		//Reversi button
+		Button reversiStart = new Button("R/O");
+		reversiStart.setLayoutX(60);
+		reversiStart.setLayoutY(50);
+		
+		root.getChildren().add(minesweeperStart);
+		root.getChildren().add(reversiStart);
+		
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		primaryStage.setScene(scene);
+		primaryStage.show();
+		
+		minesweeperStart.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e) {
+				minesweeper = true;
+				reversi = false;
+				startMinesweeper(primaryStage);
+			}
+		});
+		reversiStart.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e) {
+				minesweeper = false;
+				reversi = true;
 					// Beginning of game this button starts the game and draws
 					// the new board
 
@@ -55,16 +122,38 @@ public class Main extends Application {
 						}
 					}
 				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			
+		});
 	}
-
-	public static void main(String[] args) {
-		launch(args);
+	
+	
+	
+	private void startMinesweeper(Stage primaryStage) {
+		curGame = new MinesweeperGame();
+		((MinesweeperGame) curGame).newGame(MinesweeperConstants.EASY_NUM_ROWS, MinesweeperConstants.EASY_NUM_COLS, MinesweeperConstants.EASY_MINE_DENSITY);
+		((MinesweeperGame) curGame).gameBoard.render(root);
+		
+		scene.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseClickEvent);
+		
+		new AnimationTimer() {
+			@Override
+			public void handle(long time) {
+				((MinesweeperGame) curGame).gameBoard.timeIncrease();
+//				if(time%20 == 0) {
+					if (curGame.getState() == 1) {
+						System.out.println("You won!");
+						stop();
+					} else if (curGame.getState() == -1) {
+						System.out.println("You lost...");
+						stop();
+					}
+					
+					((MinesweeperGame) curGame).gameBoard.render(root);
+				}
+//			}
+		}.start();
 	}
-
+	
 	public void reversiBoardSetUp() {
 		// Loop sets up the buttons and initializes them with the
 		// initializeButton method
@@ -91,4 +180,8 @@ public class Main extends Application {
 		ReversiPiece.tileOccupied[4][3] = true;
 	}
 
+
+	public static void main(String[] args) {
+		launch(args);
+	}
 }
