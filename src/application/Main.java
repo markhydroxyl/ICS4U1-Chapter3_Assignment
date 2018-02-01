@@ -75,14 +75,14 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		//Minesweeper button
-		Button minesweeperStart = new Button("MS");
-		minesweeperStart.setLayoutX(10);
-		minesweeperStart.setLayoutY(50);
+		Button minesweeperStart = new Button("Minesweeper");
+		minesweeperStart.setLayoutX(100);
+		minesweeperStart.setLayoutY(75);
 		
 		//Reversi button
-		Button reversiStart = new Button("R/O");
-		reversiStart.setLayoutX(60);
-		reversiStart.setLayoutY(50);
+		Button reversiStart = new Button("Reversi");
+		reversiStart.setLayoutX(210);
+		reversiStart.setLayoutY(75);
 		
 		root.getChildren().add(minesweeperStart);
 		root.getChildren().add(reversiStart);
@@ -139,18 +139,19 @@ public class Main extends Application {
 			@Override
 			public void handle(long time) {
 				((MinesweeperGame) curGame).gameBoard.timeIncrease();
-//				if(time%20 == 0) {
-					if (curGame.getState() == 1) {
-						System.out.println("You won!");
-						stop();
-					} else if (curGame.getState() == -1) {
-						System.out.println("You lost...");
-						stop();
-					}
-					
-					((MinesweeperGame) curGame).gameBoard.render(root);
+				if (curGame.getState() == 1) {
+					System.out.println("You won!");
+					stop();
+					//TODO: Add return to home screen code here
+				} else if (curGame.getState() == -1) {
+					System.out.println("You lost...");
+					stop();
+					//TODO: Add return to home screen code here
 				}
-//			}
+				
+//				root.getChildren().remove(root.getChildren().size()-1);
+				((MinesweeperGame) curGame).gameBoard.render(root);
+			}
 		}.start();
 	}
 	
@@ -165,7 +166,6 @@ public class Main extends Application {
 				// instances, and the counters for the specific instance in the
 				// array
 				reversiObjects[i][t].initializeButton(reversiObjects[i][t], reversiObjects);
-
 			}
 
 		}

@@ -2,10 +2,8 @@ package minesweeper.tiles;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
-import util.MinesweeperConstants;
 
 public class NumberTile extends Tile {
 	private int numAdjMines;
@@ -36,8 +34,7 @@ public class NumberTile extends Tile {
 	}
 	
 	@Override
-	public void displayTile(Canvas aCanvas, int aRow, int aCol, Pane aRoot) {
-		super.displayTile(aCanvas, aRow, aCol, aRoot);
+	public Canvas displayTile(Canvas aCanvas, int aRow, int aCol) {
 		GraphicsContext tileGC = aCanvas.getGraphicsContext2D();
 		tileGC.setTextAlign(TextAlignment.CENTER);
 		tileGC.setLineWidth(0.5);
@@ -51,10 +48,8 @@ public class NumberTile extends Tile {
 			tileGC.setFill(Color.GREY);
 			tileGC.setStroke(Color.GREY);
 		}
-		tileGC.fillRect(0, 0, tileWidth, tileHeight);
-		tileGC.strokeText(""+numAdjMines, tileWidth/2, tileHeight/2+tileGC.getFont().getSize()/2);
-		aCanvas.setTranslateX(aRow*tileWidth+MinesweeperConstants.X_OFFSET);
-		aCanvas.setTranslateY(aCol*tileHeight+MinesweeperConstants.Y_OFFSET);
-		aRoot.getChildren().add(aCanvas);
+		tileGC.fillRect(aRow*tileWidth, aCol*tileHeight, tileWidth, tileHeight);
+		tileGC.strokeText(""+numAdjMines, aRow*tileWidth+tileWidth/2, aCol*tileHeight+tileHeight/2+tileGC.getFont().getSize()/2);
+		return aCanvas;
 	}
 }

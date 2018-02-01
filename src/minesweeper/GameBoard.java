@@ -14,7 +14,6 @@ public class GameBoard {
 	private int boardWidth;
 	private int boardHeight;
 	private int mineCount;
-	private InputHandler inHandler;
 	private Display display;
 	private Tile[][] tileArray;
 	private Timer time;

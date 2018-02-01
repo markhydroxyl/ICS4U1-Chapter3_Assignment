@@ -1,7 +1,6 @@
 package minesweeper.tiles;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.layout.Pane;
 import util.MinesweeperConstants;
 
 public abstract class Tile {
@@ -43,8 +42,5 @@ public abstract class Tile {
 	
 	public abstract void onHighlight();
 	
-	public void displayTile(Canvas aCanvas, int aRow, int aCol, Pane aRoot) {
-		aCanvas.setWidth(tileWidth);
-		aCanvas.setHeight(tileHeight);
-	}
+	public abstract Canvas displayTile(Canvas aCanvas, int aRow, int aCol);
 }

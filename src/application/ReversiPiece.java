@@ -87,6 +87,7 @@ public class ReversiPiece extends ReversiBoard {
 					}
 				} else {
 					countScore(pieceArray);
+					//TODO: Add return to home screen code here
 				}
 			}
 		});

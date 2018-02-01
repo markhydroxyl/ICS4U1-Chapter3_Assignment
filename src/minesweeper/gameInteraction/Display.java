@@ -7,22 +7,26 @@ import minesweeper.tiles.*;
 import util.MinesweeperConstants;
 
 public class Display {
+	private boolean alreadyDisplayed = false;
+	private Canvas tileCanvas = new Canvas(MinesweeperConstants.EASY_NUM_ROWS*MinesweeperConstants.TILE_WIDTH, MinesweeperConstants.EASY_NUM_COLS*MinesweeperConstants.TILE_HEIGHT);
 	
-	public Display() {
-		
-	}
+	public Display() {}
 	
 	public void display(Tile[][] aArray, Pane aRoot) {
 		//Show display on screen
-		
+		tileCanvas.setTranslateX(MinesweeperConstants.X_OFFSET);
+		tileCanvas.setTranslateY(MinesweeperConstants.Y_OFFSET);
 		for (int row=0; row<aArray.length; row++) {
 			for (int col=0; col<aArray[0].length; col++) {
-				Canvas tileCanvas = new Canvas();
-				aArray[row][col].displayTile(tileCanvas, row, col, aRoot);
+				tileCanvas = aArray[row][col].displayTile(tileCanvas, row, col);
 			}
 		}
 		
-		drawLines(aRoot, aArray.length, aArray[0].length);
+		if (!alreadyDisplayed) {
+			aRoot.getChildren().add(tileCanvas);
+			alreadyDisplayed = true;
+			drawLines(aRoot, aArray.length, aArray[0].length);
+		}
 		
 		//Print game to console for reference
 //		printToConsole(aArray);

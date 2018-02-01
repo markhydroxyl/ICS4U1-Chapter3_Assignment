@@ -2,9 +2,7 @@ package minesweeper.tiles;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import util.MinesweeperConstants;
 
 public class BlankTile extends Tile {
 	
@@ -24,9 +22,7 @@ public class BlankTile extends Tile {
 		//Highlight the tile
 	}
 	
-	@Override
-	public void displayTile(Canvas aCanvas, int aRow, int aCol, Pane aRoot) {
-		super.displayTile(aCanvas, aRow, aCol, aRoot);
+	public Canvas displayTile(Canvas aCanvas, int aRow, int aCol) {
 		GraphicsContext tileGC = aCanvas.getGraphicsContext2D();
 		if (isRevealed()) {
 			tileGC.setFill(Color.LIGHTGREY);
@@ -35,9 +31,7 @@ public class BlankTile extends Tile {
 		} else {
 			tileGC.setFill(Color.GREY);
 		}
-		tileGC.fillRect(0, 0, tileWidth, tileHeight);
-		aCanvas.setTranslateX(aRow*tileWidth+MinesweeperConstants.X_OFFSET);
-		aCanvas.setTranslateY(aCol*tileHeight+MinesweeperConstants.Y_OFFSET);
-		aRoot.getChildren().add(aCanvas);
+		tileGC.fillRect(aRow*tileWidth, aCol*tileHeight, tileWidth, tileHeight);
+		return aCanvas;
 	}
 }
