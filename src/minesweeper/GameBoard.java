@@ -45,13 +45,16 @@ public class GameBoard {
 	}
 	
 	public void render(Pane aRoot) {
+		//Render the window
 		this.display.display(tileArray, aRoot);
 	}
 	
 	public void displayOver(Pane aRoot, boolean aWin) {
+		//Render game over text
 		this.display.onGameOver(aRoot, aWin);
 	}
 	
+	//Unused time counter
 	public void timeIncrease() {
 		time.incrementTime();
 	}
@@ -60,6 +63,7 @@ public class GameBoard {
 		return time.getTime();
 	}
 	
+	//Generate the mines by randomly selecting x and y co-ordinates, checking for the presence of mines, and replacing as necessary 
 	private void addMines() {
 		boolean mineSet = false;
 		for (int i=0; i<mineCount; i++) {
@@ -77,6 +81,7 @@ public class GameBoard {
 		}
 	}
 	
+	//Creates an array of tiles of the approrpriate type
 	public void generate() {
 		//Generate a grid of Tiles
 		addMines();
@@ -97,6 +102,7 @@ public class GameBoard {
 		}
 	}
 	
+	//Count the adjacent mines for number tiles
 	private int countAdjMines(BoardPosition coor) {
 		int count = 0;
 		int nextX=0, nextY=0;
@@ -113,6 +119,7 @@ public class GameBoard {
 		return count;
 	}
 	
+	//On right-click
 	public void onFlag(BoardPosition coor) {
 		Tile toFlag = getTile(coor);
 		if(!toFlag.isRevealed()) {
@@ -121,6 +128,7 @@ public class GameBoard {
 		}
 	}
 	
+	//On left-click
 	public boolean[] onReveal(BoardPosition coor) {
 		Tile toReveal = getTile(coor);
 		if(!toReveal.isFlagged()&&!toReveal.isRevealed()) {
@@ -140,6 +148,7 @@ public class GameBoard {
 		return checkWin();
 	}
 	
+	//When a blank tile is clicked, search all adjacent tiles and reveal as appropriate
 	private int countAndRevealAdjBlanks(BoardPosition coor) {
 		int counter = 1;
 		ArrayList<BoardPosition> posToBeChecked = new ArrayList<BoardPosition>();
@@ -168,19 +177,16 @@ public class GameBoard {
 		return counter;
 	}
 	
+	//On game over, reveal all the tiles
 	private void revealAll() {
 		for (int i=0; i<boardWidth; i++) {
 			for (int j=0; j<boardHeight; j++) {
 				getTile(i, j).setRevealTrue();
-//				if (!getTile(i, j).isRevealed()&&!getTile(i, j).isFlagged()) {
-//					getTile(i, j).setRevealTrue();
-//				} else if (getTile(i, j).isFlagged()&&getTile(i, j) instanceof MineTile) {
-//					//Logic for showing that it was incorrectly flagged
-//				}
 			}
 		}
 	}
 	
+	//Check for game over and win conditions
 	public boolean[] checkWin() {
 		boolean gameOver = false;
 		boolean gameWon = true;

@@ -13,6 +13,7 @@ public class Display {
 	
 	public Display() {}
 	
+	//Display method for typical rendering
 	public void display(Tile[][] aArray, Pane aRoot) {
 		//Show display on screen
 		tileCanvas.setTranslateX(MinesweeperConstants.X_OFFSET);
@@ -33,6 +34,7 @@ public class Display {
 //		printToConsole(aArray);
 	}
 	
+	//Display method for game over text
 	public void onGameOver(Pane aRoot, boolean win) {
 		Canvas gameOverText = new Canvas(50, 50);
 		gameOverText.setTranslateX(20);
@@ -48,6 +50,7 @@ public class Display {
 		aRoot.getChildren().add(gameOverText);
 	}
 	
+	//Draw the grid lines
 	private void drawLines(Pane aRoot, int numRows, int numCols) {
 		
 		for (int i=0; i<=numCols; i++) {
@@ -71,6 +74,7 @@ public class Display {
 		}
 	}
 	
+	//Unused console print statement
 	private void printToConsole(Tile[][] aArray) {
 		System.out.println();
 		

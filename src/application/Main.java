@@ -20,7 +20,9 @@ import util.MinesweeperConstants;
 public class Main extends Application {
 	Pane root = new Pane();
 	Scene scene = new Scene(root, 500, 500);
-	Difficulty gameMode = Difficulty.EASY;
+	
+	//Minesweeper constants
+	Difficulty minesweeperGameMode = Difficulty.EASY;
 	boolean minesweeper = false;
 	boolean reversi = false;
 	Game curGame;
@@ -30,6 +32,7 @@ public class Main extends Application {
 	//int used for setup of the individual instances of the array above
 	public int setup = 1;
 	
+	//Mouse event handler for minesweeper
 	EventHandler<MouseEvent> mouseClickEvent = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent event) {
@@ -39,16 +42,16 @@ public class Main extends Application {
 				System.out.println("Clicked at: ("+clickX+", "+clickY+")");
 				boolean inBounds = false;
 				
-				if((clickX>0 && clickY>0)&&((gameMode.equals(Difficulty.EASY) && 
+				if((clickX>0 && clickY>0)&&((minesweeperGameMode.equals(Difficulty.EASY) && 
 								clickX < MinesweeperConstants.EASY_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
 								clickY < MinesweeperConstants.EASY_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET)||
-						(gameMode.equals(Difficulty.MEDIUM) && 
+						(minesweeperGameMode.equals(Difficulty.MEDIUM) && 
 									clickX < MinesweeperConstants.MED_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
 								clickY < MinesweeperConstants.MED_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET)||
-						(gameMode.equals(Difficulty.HARD) && 
+						(minesweeperGameMode.equals(Difficulty.HARD) && 
 								clickX < MinesweeperConstants.HARD_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
 								clickY < MinesweeperConstants.HARD_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET)||
-						(gameMode.equals(Difficulty.LUNATIC) && 
+						(minesweeperGameMode.equals(Difficulty.LUNATIC) && 
 								clickX < MinesweeperConstants.LUNA_SCREEN_WIDTH-2*MinesweeperConstants.X_OFFSET &&
 								clickY < MinesweeperConstants.LUNA_SCREEN_HEIGHT-2*MinesweeperConstants.Y_OFFSET))) {
 					inBounds = true;
@@ -126,8 +129,6 @@ public class Main extends Application {
 		});
 	}
 	
-	
-	
 	private void startMinesweeper(Stage primaryStage) {
 		curGame = new MinesweeperGame();
 		((MinesweeperGame) curGame).newGame(MinesweeperConstants.EASY_NUM_ROWS, MinesweeperConstants.EASY_NUM_COLS, MinesweeperConstants.EASY_MINE_DENSITY);
@@ -138,8 +139,11 @@ public class Main extends Application {
 		new AnimationTimer() {
 			@Override
 			public void handle(long time) {
+				//Render the gameboard every animation tick
 				((MinesweeperGame) curGame).gameBoard.render(root);
 				((MinesweeperGame) curGame).gameBoard.timeIncrease();
+				
+				//Check for win condition
 				if (curGame.getState() == 1) {
 					System.out.println("You won!");
 					((MinesweeperGame) curGame).gameBoard.displayOver(root, true);
